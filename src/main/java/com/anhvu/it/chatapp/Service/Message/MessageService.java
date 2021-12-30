@@ -1,4 +1,4 @@
-package com.anhvu.it.chat.app.Service.Message;
+package com.anhvu.it.chatapp.Service.Message;
 
 public interface MessageService {
 }

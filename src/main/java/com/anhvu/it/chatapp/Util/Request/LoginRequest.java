@@ -1,4 +1,4 @@
-package com.anhvu.it.chat.app.Util.Request;
+package com.anhvu.it.chatapp.Util.Request;
 
 public class LoginRequest {
 }

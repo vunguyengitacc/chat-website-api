@@ -1,4 +1,4 @@
-package com.anhvu.it.chat.app.Model;
+package com.anhvu.it.chatapp.Model;
 
 import com.anhvu.it.chat.app.Model.ID.RoomDetailID;
 

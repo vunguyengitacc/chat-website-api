@@ -1,7 +1,7 @@
-package com.anhvu.it.chat.app.Service.User;
+package com.anhvu.it.chatapp.Service.User;
 
-import com.anhvu.it.chat.app.DataAccess.UserDAL;
-import com.anhvu.it.chat.app.Model.User;
+import com.anhvu.it.chatapp.DataAccess.UserDAL;
+import com.anhvu.it.chatapp.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

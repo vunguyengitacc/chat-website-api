@@ -1,4 +1,4 @@
-package com.anhvu.it.chat.app.Model.ID;
+package com.anhvu.it.chatapp.Model.ID;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

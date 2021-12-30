@@ -1,4 +1,4 @@
-package com.anhvu.it.chat.app.Util.Response;
+package com.anhvu.it.chatapp.Util.Response;
 
 public class MainResponse<T> {
     private T data;

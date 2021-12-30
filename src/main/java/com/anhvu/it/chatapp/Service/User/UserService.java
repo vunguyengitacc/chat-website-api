@@ -1,6 +1,6 @@
-package com.anhvu.it.chat.app.Service.User;
+package com.anhvu.it.chatapp.Service.User;
 
-import com.anhvu.it.chat.app.Model.User;
+import com.anhvu.it.chatapp.Model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

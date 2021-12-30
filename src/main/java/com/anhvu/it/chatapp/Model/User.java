@@ -1,4 +1,4 @@
-package com.anhvu.it.chat.app.Model;
+package com.anhvu.it.chatapp.Model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

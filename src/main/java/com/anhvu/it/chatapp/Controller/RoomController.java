@@ -1,7 +1,7 @@
-package com.anhvu.it.chat.app.Controller;
+package com.anhvu.it.chatapp.Controller;
 
-import com.anhvu.it.chat.app.Model.Room;
-import com.anhvu.it.chat.app.Service.Room.RoomService;
+import com.anhvu.it.chatapp.Model.Room;
+import com.anhvu.it.chatapp.Service.Room.RoomService;
 import com.anhvu.it.chat.app.Util.Response.MainResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

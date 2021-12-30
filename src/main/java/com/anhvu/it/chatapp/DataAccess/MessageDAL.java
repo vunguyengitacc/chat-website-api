@@ -1,6 +1,6 @@
-package com.anhvu.it.chat.app.DataAccess;
+package com.anhvu.it.chatapp.DataAccess;
 
-import com.anhvu.it.chat.app.Model.Message;
+import com.anhvu.it.chatapp.Model.Message;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
