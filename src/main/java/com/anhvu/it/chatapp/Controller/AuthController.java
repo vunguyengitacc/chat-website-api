@@ -2,7 +2,8 @@ package com.anhvu.it.chatapp.Controller;
 
 import com.anhvu.it.chatapp.Model.User;
 import com.anhvu.it.chatapp.Service.User.UserService;
-import com.anhvu.it.chat.app.Util.Response.MainResponse;
+import com.anhvu.it.chatapp.Util.Request.RegisterRequest;
+import com.anhvu.it.chatapp.Util.Response.MainResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +23,18 @@ public class AuthController {
 
 
     @PostMapping()
-    public ResponseEntity<MainResponse<User>> register(@RequestBody User user) {
+    public ResponseEntity<MainResponse<User>> register(@RequestBody RegisterRequest user) {
         MainResponse<User> mainResponse;
         try {
-            User rs = userService.createOne(user);
-            if(rs == null) throw new Exception("Unable to create an account with this data");
+            if (user.getAvatarURI().equals(""))
+                user.generateURI();
+            User temp = new User();
+            temp.setUsername(user.getUsername());
+            temp.setPassword(user.getPassword());
+            temp.setName(user.getName());
+            temp.setAvatarURI(user.getAvatarURI());
+            User rs = userService.createOne(temp);
+            if (rs == null) throw new Exception("Unable to create an account with this data");
             mainResponse = new MainResponse<User>(rs, "SUCCESS");
             return new ResponseEntity<MainResponse<User>>(mainResponse, HttpStatus.OK);
         } catch (Exception e) {
@@ -41,7 +49,7 @@ public class AuthController {
         MainResponse<User> mainResponse;
         try {
             User rs = userService.createOne(user);
-            if(rs == null) throw new Exception("Unable to create an account with this data");
+            if (rs == null) throw new Exception("Unable to create an account with this data");
             mainResponse = new MainResponse<User>(rs, "SUCCESS");
             return new ResponseEntity<MainResponse<User>>(mainResponse, HttpStatus.OK);
         } catch (Exception e) {
