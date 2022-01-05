@@ -10,5 +10,9 @@ public interface UserService {
 
     public User getByUsername(String username);
 
+    public User getById(Long id);
+
     public User createOne(User user);
+
+    public List<User> search(String term);
 }

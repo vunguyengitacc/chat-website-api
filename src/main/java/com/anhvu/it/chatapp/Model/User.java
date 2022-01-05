@@ -3,6 +3,7 @@ package com.anhvu.it.chatapp.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -14,18 +15,30 @@ public class User implements Serializable {
     @Column(name = "_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 20, nullable = false, unique = true)
-    @Pattern(regexp = "[a-zA-Z0-9]{8,20}", message = "The username length must be between 8 and 20 char")
+    @Pattern(regexp = "[a-zA-Z0-9]{8,20}", message = "The username is only contain letter or number")
+    @Size(min = 8, max = 20,message = "The username length must be between 8 and 20 characters")
     private String username;
+
     @Column(length = 50, nullable = false)
-    @Pattern(regexp = "\"^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$\"", message = "The password length must be between 8 and 20 char, at least one letter, one number and one special character")
+    @Pattern(regexp = "\"^(?=.*[A-Za-z])[A-Za-z\\d@$!%*#?&]$\"", message = "At least one letter")
+    @Pattern(regexp = "\"^(?=.*\\d)[A-Za-z\\d@$!%*#?&]$\"", message = "At least one number")
+    @Pattern(regexp = "\"^(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]$\"", message = "At least one special character")
+    @Size(min = 8, max = 20,message = "The password length must be between 8 and 20 characters")
+    @NotEmpty(message = "The password is required")
     private String password;
+
     @Column(length = 100, nullable = false)
+    @NotEmpty(message = "The name is required")
     private String name;
+
     @Column(length = 100, nullable = true)
     private String email;
+
     @Column(length = 300, nullable = false)
     private String avatarURI;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<RoomDetail> roomDetails;
 
@@ -60,7 +73,6 @@ public class User implements Serializable {
         return password;
     }
 
-
     public String getName() {
         return name;
     }
@@ -76,8 +88,8 @@ public class User implements Serializable {
     public Set<RoomDetail> getRoomDetails() {
         return roomDetails;
     }
-    //Setters
 
+    //Setters
 
     public void set_id(Long id) {
         this.id = id;

@@ -1,6 +1,6 @@
 package com.anhvu.it.chatapp.Model;
 
-import com.anhvu.it.chat.app.Model.ID.RoomDetailID;
+import com.anhvu.it.chatapp.Model.ID.RoomDetailID;
 
 import javax.persistence.*;
 import java.io.Serializable;

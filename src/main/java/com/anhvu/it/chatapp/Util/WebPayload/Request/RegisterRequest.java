@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.Util.Request;
+package com.anhvu.it.chatapp.Util.WebPayload.Request;
 
 public class RegisterRequest {
     private String username;

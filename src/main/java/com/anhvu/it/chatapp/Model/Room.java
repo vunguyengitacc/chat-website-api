@@ -1,6 +1,8 @@
 package com.anhvu.it.chatapp.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -14,6 +16,8 @@ public class Room implements Serializable {
     @GeneratedValue
     private Long id;
     @Column(length = 100, nullable = false)
+    @NotEmpty(message = "The room name is required")
+    @Size(min = 8, max = 50, message = "The room name length must be between 8 and 50 characters")
     private String name;
     private Date createdDate;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
