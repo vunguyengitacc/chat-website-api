@@ -22,4 +22,9 @@ public class RoomServiceImplement implements RoomService {
     public Room getById(long id) {
         return roomDAL.findById(id);
     }
+
+    @Override
+    public List<Room> search(String term) {
+        return roomDAL.search(term);
+    }
 }

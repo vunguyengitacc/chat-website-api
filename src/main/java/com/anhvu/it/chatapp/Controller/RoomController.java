@@ -25,9 +25,22 @@ public class RoomController {
             mainResponse = new MainResponse<List<Room>>(roomService.getAll(), "SUCCESS");
             return new ResponseEntity<MainResponse<List<Room>>>(mainResponse, HttpStatus.OK);
         } catch (Exception e) {
-            mainResponse = new MainResponse<List<Room>>("Error: " + e.getMessage(), "SUCCESS", true);
+            mainResponse = new MainResponse<List<Room>>("Error: " + e.getMessage(), "FAILED", true);
             return new ResponseEntity<MainResponse<List<Room>>>(mainResponse, HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @GetMapping("/{term}")
+    public ResponseEntity<MainResponse<List<Room>>> search(@PathVariable String term) {
+        MainResponse<List<Room>> mainResponse;
+        try {
+            List<Room> lstRoom = roomService.search(term);
+
+            mainResponse = new MainResponse<List<Room>>(lstRoom, "SUCCESS");
+            return new ResponseEntity<MainResponse<List<Room>>>(mainResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            mainResponse = new MainResponse<List<Room>>("Error: " + e.getMessage(), "FAILED", true);
+            return new ResponseEntity<>(mainResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 }
