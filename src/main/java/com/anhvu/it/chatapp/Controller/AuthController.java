@@ -51,18 +51,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MainResponse<User>> login(@RequestBody User user) {
-        MainResponse<User> mainResponse;
-        try {
-            User rs = userService.createOne(user);
-            if (rs == null) throw new Exception("Unable to create an account with this data");
-            mainResponse = new MainResponse<User>(rs, "SUCCESS");
-            return ResponseEntity.ok().body(mainResponse);
-        } catch (Exception e) {
-            mainResponse = new MainResponse<User>("Error: " + e.getMessage(), "FAILED", true);
-            System.out.println(mainResponse.getMessage());
-            return ResponseEntity.badRequest().body(mainResponse);
-        }
+    public void login(@RequestBody User user) {
+        System.out.println("HELLo");
     }
 
 }

@@ -1,6 +1,6 @@
 package com.anhvu.it.chatapp.config;
 
-import com.anhvu.it.chatapp.filter.AuthFilter;
+import com.anhvu.it.chatapp.filter.LoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        LoginFilter loginFilter = new LoginFilter(authenticationManagerBean());
+        loginFilter.setFilterProcessesUrl("/auth/login");
+
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
-        http.addFilter(new AuthFilter(authenticationManagerBean()));
+        http.authorizeRequests().antMatchers( "/auth/login", "/auth/register").permitAll();
+        http.authorizeRequests().anyRequest().fullyAuthenticated();
+        http.addFilter(loginFilter);
     }
 
 

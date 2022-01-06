@@ -9,6 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityGraph;
@@ -31,6 +33,9 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Autowired
     UserDAL userDAL;
 
+    @Autowired
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Override
     public List<User> getAll() {
         return userDAL.findAll();
@@ -48,6 +53,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     @Override
     public User createOne(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDAL.save(user);
     }
 

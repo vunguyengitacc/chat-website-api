@@ -27,7 +27,7 @@ public class Room implements Serializable {
 
     private Date createdDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
     private Set<Member> members;
 
     //Constructors

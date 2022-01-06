@@ -31,7 +31,7 @@ public class User implements Serializable {
 //    @Pattern(regexp = "\"^(?=.*[A-Za-z])[A-Za-z\\d@$!%*#?&]$\"", message = "At least one letter")
 //    @Pattern(regexp = "\"^(?=.*\\d)[A-Za-z\\d@$!%*#?&]$\"", message = "At least one number")
 //    @Pattern(regexp = "\"^(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]$\"", message = "At least one special character")
-    @Size(min = 8, max = 20, message = "The password length must be between 8 and 20 characters")
+ //   @Size(min = 8, max = 20, message = "The password length must be between 8 and 20 characters")
     @NotEmpty(message = "The password is required")
     private String password;
 
@@ -45,7 +45,7 @@ public class User implements Serializable {
     @Column(length = 300, nullable = false)
     private String avatarURI;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Member> members;
 
     //Constructors
