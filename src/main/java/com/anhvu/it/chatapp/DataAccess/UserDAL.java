@@ -1,6 +1,8 @@
 package com.anhvu.it.chatapp.DataAccess;
 
 import com.anhvu.it.chatapp.Model.User;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,6 @@ public interface UserDAL extends CrudRepository<User, Long> {
     public List<User> findAll();
 
     public User findByUsername(String username);
+
 
 }

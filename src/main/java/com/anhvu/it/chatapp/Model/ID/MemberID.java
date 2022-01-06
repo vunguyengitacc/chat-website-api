@@ -4,15 +4,18 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class RoomDetailID implements Serializable {
+public class MemberID implements Serializable {
     private Long userId;
     private Long roomId;
 
     //Constructors
 
-    public RoomDetailID(Long userId, Long roomId) {
+    public MemberID(Long userId, Long roomId) {
         this.userId = userId;
         this.roomId = roomId;
+    }
+
+    public MemberID() {
     }
 
     //Getters

@@ -1,6 +1,8 @@
 package com.anhvu.it.chatapp.Util.WebPayload.Response;
 
-public class MainResponse<T> {
+import java.io.Serializable;
+
+public class MainResponse<T> implements Serializable {
     private T data;
     private String status;
     private String message;

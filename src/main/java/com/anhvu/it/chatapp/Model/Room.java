@@ -1,5 +1,8 @@
 package com.anhvu.it.chatapp.Model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -9,19 +12,23 @@ import java.util.Set;
 
 @Entity
 @Table(name = "room")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Room implements Serializable {
 
     @Id
     @Column(name = "_id")
     @GeneratedValue
     private Long id;
+
     @Column(length = 100, nullable = false)
     @NotEmpty(message = "The room name is required")
     @Size(min = 8, max = 50, message = "The room name length must be between 8 and 50 characters")
     private String name;
+
     private Date createdDate;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
-    private Set<RoomDetail> roomDetails;
+    private Set<Member> members;
 
     //Constructors
 
@@ -46,8 +53,8 @@ public class Room implements Serializable {
         return createdDate;
     }
 
-    public Set<RoomDetail> getRoomDetails() {
-        return roomDetails;
+    public Set<Member> getRoomDetails() {
+        return members;
     }
     //Setters
 
@@ -63,7 +70,7 @@ public class Room implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public void setRoomDetails(Set<RoomDetail> roomDetails) {
-        this.roomDetails = roomDetails;
+    public void setRoomDetails(Set<Member> members) {
+        this.members = members;
     }
 }
