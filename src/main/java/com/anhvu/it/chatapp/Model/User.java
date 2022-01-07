@@ -3,6 +3,8 @@ package com.anhvu.it.chatapp.Model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -15,6 +17,8 @@ import java.util.Set;
 @Table(name = "user")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonIgnoreProperties(value = {"password"})
+@Getter
+@Setter
 public class User implements Serializable {
 
     @Id
@@ -45,7 +49,7 @@ public class User implements Serializable {
     @Column(length = 300, nullable = false)
     private String avatarURI;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Member> members;
 
     //Constructors
@@ -65,81 +69,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    //Getters
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getAvatarURI() {
-        return avatarURI;
-    }
-
-    public Set<Member> getMembers() {
-        return members;
-    }
-
-//    public Set<User> getFriends() {
-//        return friends;
-//    }
-//
-//    public Set<User> getFriendsWaiting() {
-//        return friendsWaiting;
-//    }
-//
-//    public Set<User> getFriendsRequest() {
-//        return friendsRequest;
-//    }
-
-    //Setters
-
-    public void set_id(Long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setAvatarURI(String avatarURI) {
-        this.avatarURI = avatarURI;
-    }
-
-    public void setRoomDetails(Set<Member> members) {
-        this.members = members;
-    }
-
-    public void setMembers(Set<Member> members) {
-        this.members = members;
+    //Other
+    public void update(User updateData){
+        this.name = updateData.getName();
+        this.email = updateData.getEmail();
+        this.avatarURI = updateData.getAvatarURI();
     }
 
 }

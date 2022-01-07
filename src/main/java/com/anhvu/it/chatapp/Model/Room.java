@@ -2,17 +2,22 @@ package com.anhvu.it.chatapp.Model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "room")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
 public class Room implements Serializable {
 
     @Id
@@ -25,9 +30,10 @@ public class Room implements Serializable {
     @Size(min = 8, max = 50, message = "The room name length must be between 8 and 50 characters")
     private String name;
 
+    @Temporal(TemporalType.DATE)
     private Date createdDate;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room", cascade = CascadeType.ALL)
     private Set<Member> members;
 
     //Constructors
@@ -39,38 +45,11 @@ public class Room implements Serializable {
         this.name = name;
     }
 
-    //Getters
 
-    public Long getId() {
-        return id;
-    }
+    //Other
 
-    public String getName() {
-        return name;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public Set<Member> getRoomDetails() {
-        return members;
-    }
-    //Setters
-
-    public void set_id(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setRoomDetails(Set<Member> members) {
-        this.members = members;
+    public void addMember(Member member) {
+        if (members == null) this.members = new HashSet<Member>();
+        this.members.add(member);
     }
 }

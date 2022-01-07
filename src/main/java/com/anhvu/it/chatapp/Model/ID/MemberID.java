@@ -1,9 +1,14 @@
 package com.anhvu.it.chatapp.Model.ID;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
+@Getter
+@Setter
 public class MemberID implements Serializable {
     private Long userId;
     private Long roomId;
@@ -18,19 +23,4 @@ public class MemberID implements Serializable {
     public MemberID() {
     }
 
-    //Getters
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Long getRoomId() {
-        return roomId;
-    }
-
-    //Setters
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }

@@ -2,6 +2,8 @@ package com.anhvu.it.chatapp.Model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +11,8 @@ import java.io.Serializable;
 @Entity
 @Table(name = "message")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Getter
+@Setter
 public class Message implements Serializable {
 
     @Id
@@ -35,39 +39,4 @@ public class Message implements Serializable {
         this.content = content;
     }
 
-    //Getters
-
-    public Long getId() {
-        return id;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    //Setters
-
-    public void set_id(Long _id) {
-        this.id = id;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

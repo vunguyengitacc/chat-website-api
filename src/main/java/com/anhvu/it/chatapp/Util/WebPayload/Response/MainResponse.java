@@ -1,7 +1,14 @@
 package com.anhvu.it.chatapp.Util.WebPayload.Response;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class MainResponse<T> implements Serializable {
     private T data;
     private String status;
@@ -24,33 +31,4 @@ public class MainResponse<T> implements Serializable {
 
     }
 
-    public MainResponse() {
-    }
-
-    //Getters
-
-    public T getData() {
-        return data;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-//Setters
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

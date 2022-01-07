@@ -1,5 +1,6 @@
 package com.anhvu.it.chatapp.filter;
 
+import com.anhvu.it.chatapp.Util.JWTProvider.JWTProvider;
 import com.anhvu.it.chatapp.Util.WebPayload.Response.MainResponse;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -15,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,12 +41,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         try {
             org.springframework.security.core.userdetails.User userContext = (org.springframework.security.core.userdetails.User) authResult.getPrincipal();
 
-            Algorithm algorithm = Algorithm.HMAC256("asiuycrhiomnexi".getBytes());
-            String access_token = JWT.create()
-                    .withSubject(userContext.getUsername())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 1000000))
-                    .withIssuer(request.getRequestURL().toString())
-                    .sign(algorithm);
+            JWTProvider jwtProvider= new JWTProvider();
+            jwtProvider.setNextExpired(Long.valueOf(100000000));
+            jwtProvider.setData(userContext.getUsername());
+            jwtProvider.setIssuer(request.getRequestURL().toString());
+
+            String access_token = jwtProvider.generate();
             response.setContentType("APPLICATION_JSON_VALUE");
             Map<String, String> data = new HashMap<>();
             data.put("access_token", access_token);

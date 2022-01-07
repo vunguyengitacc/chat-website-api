@@ -12,7 +12,7 @@ public interface UserService {
 
     public User getById(Long id);
 
-    public User createOne(User user);
+    public User saveOne(User user);
 
     public List<User> search(String term);
 }

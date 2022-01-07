@@ -52,7 +52,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     }
 
     @Override
-    public User createOne(User user) {
+    public User saveOne(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDAL.save(user);
     }

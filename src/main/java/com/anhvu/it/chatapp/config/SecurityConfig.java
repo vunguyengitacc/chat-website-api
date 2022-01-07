@@ -1,5 +1,6 @@
 package com.anhvu.it.chatapp.config;
 
+import com.anhvu.it.chatapp.filter.AuthenticationFilter;
 import com.anhvu.it.chatapp.filter.LoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -36,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers( "/auth/login", "/auth/register").permitAll();
         http.authorizeRequests().anyRequest().fullyAuthenticated();
         http.addFilter(loginFilter);
+        http.addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
 

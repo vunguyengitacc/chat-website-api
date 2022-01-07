@@ -11,4 +11,8 @@ public interface RoomService {
     public Room getById(long id);
 
     public List<Room> search(String term);
+
+    public void deleteById(Long id);
+
+    public Room saveOne(Room room);
 }

@@ -27,4 +27,14 @@ public class RoomServiceImplement implements RoomService {
     public List<Room> search(String term) {
         return roomDAL.search(term);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        roomDAL.deleteById(id);
+    }
+
+    @Override
+    public Room saveOne(Room room) {
+        return roomDAL.save(room);
+    }
 }

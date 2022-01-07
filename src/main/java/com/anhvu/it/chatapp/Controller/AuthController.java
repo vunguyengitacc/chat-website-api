@@ -2,13 +2,16 @@ package com.anhvu.it.chatapp.Controller;
 
 import com.anhvu.it.chatapp.Model.User;
 import com.anhvu.it.chatapp.Service.User.UserService;
+import com.anhvu.it.chatapp.Util.JWTProvider.JWTProvider;
 import com.anhvu.it.chatapp.Util.WebPayload.Request.RegisterRequest;
 import com.anhvu.it.chatapp.Util.WebPayload.Response.MainResponse;
-import org.springframework.beans.factory.annotation.Autowired;import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
-import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -24,35 +27,30 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<MainResponse<User>> register(@RequestBody RegisterRequest user) {
+    public ResponseEntity<MainResponse> register(@RequestBody RegisterRequest user, HttpServletRequest request) {
         MainResponse<User> mainResponse;
-        try {
-            if (user.getAvatarURI().equals(""))
-                user.generateURI();
-            User temp = new User();
-            temp.setUsername(user.getUsername());
-            temp.setPassword(user.getPassword());
-            temp.setName(user.getName());
-            temp.setAvatarURI(user.getAvatarURI());
+        if (user.getAvatarURI().equals(""))
+            user.generateURI();
+        User temp = new User();
+        temp.setUsername(user.getUsername());
+        temp.setPassword(user.getPassword());
+        temp.setName(user.getName());
+        temp.setAvatarURI(user.getAvatarURI());
 
-            User rs = userService.createOne(temp);
+        User rs = userService.saveOne(temp);
 
-            mainResponse = new MainResponse<User>(rs, "SUCCESS");
-            return ResponseEntity.ok().body(mainResponse);
-        } catch (ConstraintViolationException ex) {
-            String mess = ex.getConstraintViolations().stream().map(i -> i.getMessage()).collect(Collectors.joining("/", "", ""));
-            ex.getConstraintViolations().stream().toArray();
-            mainResponse = new MainResponse<User>(mess, "FAILED", true);
-            return ResponseEntity.badRequest().body(mainResponse);
-        } catch (Exception e) {
-            mainResponse = new MainResponse<User>("Error: " + e.getMessage(), "FAILED", true);
-            return ResponseEntity.badRequest().body(mainResponse);
-        }
+        JWTProvider jwtProvider = new JWTProvider();
+        jwtProvider.setData(rs.getUsername());
+        jwtProvider.setNextExpired(Long.valueOf(1000000000));
+        jwtProvider.setIssuer(request.getRequestURL().toString());
+        jwtProvider.generate();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("access_token", jwtProvider.getToken());
+
+        mainResponse = new MainResponse(data, "SUCCESS");
+        return ResponseEntity.ok().body(mainResponse);
     }
 
-    @PostMapping("/login")
-    public void login(@RequestBody User user) {
-        System.out.println("HELLo");
-    }
 
 }
