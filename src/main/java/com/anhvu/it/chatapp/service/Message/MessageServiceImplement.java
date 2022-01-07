@@ -1,7 +1,7 @@
 package com.anhvu.it.chatapp.service.Message;
 
-import com.anhvu.it.chatapp.dataaccess.MessageDAL;
-import com.anhvu.it.chatapp.model.Message;
+import com.anhvu.it.chatapp.data.access.MessageDAL;
+import com.anhvu.it.chatapp.data.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

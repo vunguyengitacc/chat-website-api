@@ -1,7 +1,7 @@
 package com.anhvu.it.chatapp.service.Room;
 
-import com.anhvu.it.chatapp.dataaccess.RoomDAL;
-import com.anhvu.it.chatapp.model.Room;
+import com.anhvu.it.chatapp.data.access.RoomDAL;
+import com.anhvu.it.chatapp.data.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

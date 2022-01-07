@@ -1,6 +1,6 @@
 package com.anhvu.it.chatapp.controller;
 
-import com.anhvu.it.chatapp.model.User;
+import com.anhvu.it.chatapp.data.model.User;
 import com.anhvu.it.chatapp.service.User.UserService;
 import com.anhvu.it.chatapp.utility.jwt.JWTProvider;
 import com.anhvu.it.chatapp.utility.payload.request.RegisterRequest;

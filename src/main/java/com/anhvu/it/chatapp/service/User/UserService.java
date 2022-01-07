@@ -1,6 +1,6 @@
 package com.anhvu.it.chatapp.service.User;
 
-import com.anhvu.it.chatapp.model.User;
+import com.anhvu.it.chatapp.data.model.User;
 
 import java.util.List;
 

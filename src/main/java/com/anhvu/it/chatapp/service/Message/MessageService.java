@@ -1,6 +1,6 @@
 package com.anhvu.it.chatapp.service.Message;
 
-import com.anhvu.it.chatapp.model.Message;
+import com.anhvu.it.chatapp.data.model.Message;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.anhvu.it.chatapp.utility.payload.request;
 
-import com.anhvu.it.chatapp.model.Room;
+import com.anhvu.it.chatapp.data.model.Room;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

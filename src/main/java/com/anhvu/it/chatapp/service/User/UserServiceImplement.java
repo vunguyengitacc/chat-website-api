@@ -1,7 +1,7 @@
 package com.anhvu.it.chatapp.service.User;
 
-import com.anhvu.it.chatapp.dataaccess.UserDAL;
-import com.anhvu.it.chatapp.model.User;
+import com.anhvu.it.chatapp.data.access.UserDAL;
+import com.anhvu.it.chatapp.data.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

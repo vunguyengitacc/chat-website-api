@@ -1,8 +1,8 @@
 package com.anhvu.it.chatapp.controller;
 
-import com.anhvu.it.chatapp.model.Member;
-import com.anhvu.it.chatapp.model.Room;
-import com.anhvu.it.chatapp.model.User;
+import com.anhvu.it.chatapp.data.model.Member;
+import com.anhvu.it.chatapp.data.model.Room;
+import com.anhvu.it.chatapp.data.model.User;
 import com.anhvu.it.chatapp.service.Room.RoomService;
 import com.anhvu.it.chatapp.service.User.UserService;
 import com.anhvu.it.chatapp.utility.payload.request.RoomCreatorRequest;

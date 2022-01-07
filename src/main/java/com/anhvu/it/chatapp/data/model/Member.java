@@ -1,6 +1,6 @@
-package com.anhvu.it.chatapp.model;
+package com.anhvu.it.chatapp.data.model;
 
-import com.anhvu.it.chatapp.model.ID.MemberID;
+import com.anhvu.it.chatapp.data.model.id.MemberID;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;

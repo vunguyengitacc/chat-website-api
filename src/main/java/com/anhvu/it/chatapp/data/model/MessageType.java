@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.model;
+package com.anhvu.it.chatapp.data.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
