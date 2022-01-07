@@ -1,7 +1,7 @@
 package com.anhvu.it.chatapp.filter;
 
-import com.anhvu.it.chatapp.Util.JWTProvider.JWTProvider;
-import com.anhvu.it.chatapp.Util.WebPayload.Response.MainResponse;
+import com.anhvu.it.chatapp.utility.jwt.JWTProvider;
+import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

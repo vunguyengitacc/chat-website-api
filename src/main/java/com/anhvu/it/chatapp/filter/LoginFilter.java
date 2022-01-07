@@ -1,9 +1,7 @@
 package com.anhvu.it.chatapp.filter;
 
-import com.anhvu.it.chatapp.Util.JWTProvider.JWTProvider;
-import com.anhvu.it.chatapp.Util.WebPayload.Response.MainResponse;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.anhvu.it.chatapp.utility.jwt.JWTProvider;
+import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
