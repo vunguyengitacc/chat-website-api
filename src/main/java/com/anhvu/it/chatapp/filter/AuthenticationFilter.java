@@ -25,7 +25,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             try {
                 String authorization = request.getHeader("Authorization");
                 if (authorization != null && authorization.startsWith("Bearer ")) {
-
                     String token = authorization.substring("Bearer ".length());
                     JWTProvider jwtProvider = new JWTProvider();
                     jwtProvider.setToken(token);

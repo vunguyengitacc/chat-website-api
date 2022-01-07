@@ -29,7 +29,13 @@ public class MessageController {
     RoomService roomService;
 
     @GetMapping("/room/{id}")
-    public ResponseEntity<MainResponse<List<Message>>> getInRoom(@PathVariable Long id){
+    public ResponseEntity<MainResponse<List<Message>>> getInRoom(@PathVariable Long id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.getByUsername(username);
+        Room room = roomService.getById(id);
+        if (!room.isContainsUser(currentUser))
+            throw new RuntimeException("Unauthorized");
+
         MainResponse<List<Message>> response;
         List<Message> lstMessage = messageService.getInRoom(id);
         response = new MainResponse<List<Message>>(lstMessage, "SUCCESS");
@@ -37,22 +43,23 @@ public class MessageController {
     }
 
     @PostMapping()
-    public ResponseEntity<MainResponse<Message>> createOne(@RequestBody MessageCreatorRequest data){
+    public ResponseEntity<MainResponse<Message>> createOne(@RequestBody MessageCreatorRequest data) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userService.getByUsername(username);
+        Room room = roomService.getById(data.getRoomId());
+
+        if (!room.isContainsUser(currentUser))
+            throw new RuntimeException("Unauthorized");
 
         MainResponse<Message> response;
 
         Message message = new Message();
         message.setOwner(currentUser);
         message.setContent(data.getContent());
-
-        Room room = roomService.getById(data.getRoomId());
-
         message.setRoom(room);
+        message.setTypeId(data.getTypeId());
 
         messageService.saveOne(message);
-        message.setTypeId(data.getTypeId());
 
         response = new MainResponse<Message>(message, "SUCCESS");
         return ResponseEntity.ok().body(response);

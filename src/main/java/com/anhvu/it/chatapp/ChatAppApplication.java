@@ -15,9 +15,4 @@ public class ChatAppApplication {
 		SpringApplication.run(ChatAppApplication.class, args);
 	}
 
-	@Bean
-	PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
-
 }

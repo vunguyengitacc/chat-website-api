@@ -52,4 +52,13 @@ public class Room implements Serializable {
         if (members == null) this.members = new HashSet<Member>();
         this.members.add(member);
     }
+
+    public boolean isContainsUser(User user) {
+        for (Member i : members) {
+            if (user.getId() == i.getId().getUserId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
