@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.service.User;
+package com.anhvu.it.chatapp.service.user;
 
 import com.anhvu.it.chatapp.data.access.UserDAL;
 import com.anhvu.it.chatapp.data.model.User;

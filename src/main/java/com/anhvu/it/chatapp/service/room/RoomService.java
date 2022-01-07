@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.service.Room;
+package com.anhvu.it.chatapp.service.room;
 
 import com.anhvu.it.chatapp.data.model.Room;
 

@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.service.Message;
+package com.anhvu.it.chatapp.service.message;
 
 import com.anhvu.it.chatapp.data.access.MessageDAL;
 import com.anhvu.it.chatapp.data.model.Message;
