@@ -10,6 +10,7 @@ import com.anhvu.it.chatapp.utility.payload.request.MessageCreatorRequest;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,9 @@ public class MessageController {
 
     @Autowired
     RoomService roomService;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @GetMapping("/room/{id}")
     public ResponseEntity<MainResponse<List<Message>>> getInRoom(@PathVariable Long id) {
@@ -57,10 +61,10 @@ public class MessageController {
         message.setOwner(currentUser);
         message.setContent(data.getContent());
         message.setRoom(room);
-        message.setTypeId(data.getTypeId());
+        //message.setTypeId(data.getTypeId());
 
         messageService.saveOne(message);
-
+        simpMessagingTemplate.convertAndSend("room/"+room.getId(),  message );
         response = new MainResponse<Message>(message, "SUCCESS");
         return ResponseEntity.ok().body(response);
     }

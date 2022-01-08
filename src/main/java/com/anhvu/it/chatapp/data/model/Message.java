@@ -35,13 +35,12 @@ public class Message implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdDate;
 
-    @ManyToOne
-    @Column(name = "type_id")
-    private MessageType messageType;
+//    @ManyToOne
+//    @JoinColumn(name = "type_id", nullable = true)
+//    private MessageType messageType;
 
-    @ManyToOne
-    @Column(name = "type_id")
-    private int typeId;
+//    @Column(name = "type_id")
+//    private int typeId;
 
     //Constructors
 
@@ -52,15 +51,15 @@ public class Message implements Serializable {
         this.owner = owner;
         this.room = room;
         this.content = content;
-        this.typeId = typeId;
+        //this.typeId = typeId;
     }
 
     public Message(User owner, Room room, String content, MessageType type) {
         this.owner = owner;
         this.room = room;
         this.content = content;
-        this.typeId = type.getId();
-        this.messageType = type;
+        //this.typeId = type.getId();
+       //this.messageType = type;
     }
 
 }

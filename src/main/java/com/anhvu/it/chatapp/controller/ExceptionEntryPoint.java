@@ -3,6 +3,7 @@ package com.anhvu.it.chatapp.controller;
 import com.anhvu.it.chatapp.data.model.User;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +29,7 @@ public class ExceptionEntryPoint {
     public ResponseEntity<MainResponse> classCastExceptionHandler(ClassCastException ex) {
         ex.printStackTrace();
         MainResponse<User> mainResponse;
-        String mess = "Error: Internal server exception";
+        String mess = "Internal server exception";
         mainResponse = new MainResponse<User>(mess, "FAILED", true);
         return ResponseEntity.internalServerError().body(mainResponse);
     }
@@ -41,8 +42,7 @@ public class ExceptionEntryPoint {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MainResponse> exceptionHandler(Exception e) {
         MainResponse<User> mainResponse;
-        e.printStackTrace();
-        mainResponse = new MainResponse("Error: " + e.getMessage(), "FAILED", true);
+        mainResponse = new MainResponse("" + e.getMessage(), "FAILED", true);
         return ResponseEntity.internalServerError().body(mainResponse);
     }
 
@@ -50,8 +50,10 @@ public class ExceptionEntryPoint {
     public ResponseEntity<MainResponse> nullExceptionHandler(NullPointerException e){
         MainResponse<User> mainResponse;
         e.printStackTrace();
-        String mess = "Error: the resource not found";
+        String mess = "The resource not found";
         mainResponse = new MainResponse(mess, "FAILED", true);
         return ResponseEntity.badRequest().body(mainResponse);
     }
+
+
 }

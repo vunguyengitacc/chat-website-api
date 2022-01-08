@@ -52,7 +52,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         } catch (Exception ex) {
             response.setContentType("APPLICATION_JSON_VALUE");
-            MainResponse responsePayload = new MainResponse("Error: " + ex.getMessage(), "FAILED", true);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            MainResponse responsePayload = new MainResponse("" + ex.getMessage(), "FAILED", true);
             new ObjectMapper().writeValue(response.getOutputStream(), responsePayload);
         }
 
@@ -61,7 +62,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setContentType("APPLICATION_JSON_VALUE");
-        MainResponse responsePayload = new MainResponse("Error: " + failed.getMessage(), "FAILED", true);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        MainResponse responsePayload = new MainResponse("Wrong password or username!", "FAILED", true);
         new ObjectMapper().writeValue(response.getOutputStream(), responsePayload);
     }
 }

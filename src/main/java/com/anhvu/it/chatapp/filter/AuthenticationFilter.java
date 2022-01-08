@@ -38,6 +38,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 } else throw new RuntimeException("Access token required");
             } catch (Exception e) {
                 response.setContentType("APPLICATION_JSON_VALUE");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 MainResponse responsePayload = new MainResponse("Error: " + e.getMessage(), "FAILED", true);
                 new ObjectMapper().writeValue(response.getOutputStream(), responsePayload);
             }

@@ -40,6 +40,7 @@ public class UserController {
     public ResponseEntity<MainResponse<User>> getMe() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
+        System.out.println(user.getName());
         MainResponse<User> mainResponse = new MainResponse<User>(user, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
