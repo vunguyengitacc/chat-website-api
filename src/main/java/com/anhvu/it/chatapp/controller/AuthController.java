@@ -29,6 +29,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<MainResponse> register(@RequestBody RegisterRequest user, HttpServletRequest request) {
         MainResponse<User> mainResponse;
+
         if (user.getAvatarURI().equals(""))
             user.generateURI();
         User temp = new User();
@@ -36,7 +37,6 @@ public class AuthController {
         temp.setPassword(user.getPassword());
         temp.setName(user.getName());
         temp.setAvatarURI(user.getAvatarURI());
-
         User rs = userService.saveOne(temp);
 
         JWTProvider jwtProvider = new JWTProvider();
