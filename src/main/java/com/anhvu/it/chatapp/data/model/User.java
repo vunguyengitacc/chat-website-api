@@ -139,7 +139,7 @@ public class User implements Serializable {
     public void removeRequest(User target) {
         if(target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
         for(User item: this.requests){
-            if(item.getUsername().equals(this.username)){
+            if(item.getUsername().equals(target.getUsername())){
                 this.requests.remove(target);
                 return;
             }
@@ -150,7 +150,7 @@ public class User implements Serializable {
     public void removeFiend(User target) {
         if(target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
         for(User item: this.friends){
-            if(item.getUsername().equals(this.username)){
+            if(item.getUsername().equals(target.getUsername())){
                 this.friends.remove(target);
                 return;
             }
@@ -161,7 +161,7 @@ public class User implements Serializable {
     public void removeWait(User target) {
         if(target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
         for(User item: this.waits){
-            if(item.getUsername().equals(this.username)){
+            if(item.getUsername().equals(target.getUsername())){
                 this.waits.remove(target);
                 return;
             }

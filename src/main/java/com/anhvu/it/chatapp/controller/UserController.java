@@ -21,7 +21,7 @@ public class UserController {
     UserService userService;
 
     @Autowired
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    PasswordEncoder bCryptPasswordEncoder ;
 
     @GetMapping("/search")
     public ResponseEntity<MainResponse<List<User>>> searchUsers(@RequestParam String term) {
@@ -72,7 +72,7 @@ public class UserController {
     public ResponseEntity<MainResponse<User>> updateMe(@RequestBody PasswordUpdateRequest data) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
-        if(passwordEncoder.matches(data.getCurrentPassword() ,user.getPassword())){
+        if(bCryptPasswordEncoder.matches(data.getCurrentPassword() ,user.getPassword())){
             user.setPassword(data.getNewPassword());
         }
         else throw new RuntimeException("Wrong current password");
@@ -81,9 +81,11 @@ public class UserController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
-    @PostMapping("/me/request/{id}")
+    @PostMapping("/me/request/{targetId}")
     public ResponseEntity<MainResponse<Boolean>> sendRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        System.out.println(targetId);
         User user = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.sendRequest(target, user);
@@ -91,7 +93,7 @@ public class UserController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
-    @PutMapping("/me/request/{id}")
+    @PutMapping("/me/request/{targetId}")
     public ResponseEntity<MainResponse<Boolean>> acceptRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
@@ -101,7 +103,7 @@ public class UserController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
-    @DeleteMapping("/me/request/{id}")
+    @DeleteMapping("/me/request/{targetId}")
     public ResponseEntity<MainResponse<Boolean>> denyRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
@@ -111,7 +113,7 @@ public class UserController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
-    @DeleteMapping("/me/request/{id}/cancel")
+    @DeleteMapping("/me/request/{targetId}/cancel")
     public ResponseEntity<MainResponse<Boolean>> cancelRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
@@ -121,7 +123,7 @@ public class UserController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
-    @DeleteMapping("/me/friend/{id}")
+    @DeleteMapping("/me/friend/{targetId}")
     public ResponseEntity<MainResponse<Boolean>> removeFriend(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);

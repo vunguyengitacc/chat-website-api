@@ -32,7 +32,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     UserDAL userDAL;
 
     @Autowired
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<User> getAll() {
@@ -51,7 +51,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     @Override
     public User saveOne(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userDAL.save(user);
     }
 
@@ -69,8 +69,8 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDAL.findByUsername(username);
-        if(user == null) throw new UsernameNotFoundException("User not found");
-        Collection<GrantedAuthority> authorities= new ArrayList<>();
+        if (user == null) throw new UsernameNotFoundException("User not found");
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("user"));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
