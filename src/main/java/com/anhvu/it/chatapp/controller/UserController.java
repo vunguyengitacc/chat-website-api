@@ -96,7 +96,7 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
         User target = userService.getById(targetId);
-        userService.acceptRequest(target, user);
+        userService.acceptRequest(user, target);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
@@ -117,6 +117,16 @@ public class UserController {
         User user = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.cancelRequest(target, user);
+        MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        return ResponseEntity.ok().body(mainResponse);
+    }
+
+    @DeleteMapping("/me/friend/{id}")
+    public ResponseEntity<MainResponse<Boolean>> removeFriend(@PathVariable Long targetId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.getByUsername(username);
+        User target = userService.getById(targetId);
+        userService.removeFriend(target, user);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
