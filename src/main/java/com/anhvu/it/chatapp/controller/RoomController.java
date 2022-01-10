@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/rooms")
 public class RoomController {
 

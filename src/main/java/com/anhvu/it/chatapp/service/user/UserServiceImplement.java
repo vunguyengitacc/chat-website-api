@@ -74,4 +74,51 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("user"));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
+
+    @Override
+    public boolean sendRequest(User target, User wanter) {
+        target.addRequest(wanter);
+        wanter.addWait(target);
+        userDAL.save(target);
+        userDAL.save(wanter);
+        return true;
+    }
+
+    @Override
+    public boolean acceptRequest(User target, User wanter) {
+        target.removeRequest(wanter);
+        wanter.removeWait(target);
+        wanter.addFriend(target);
+        target.addFriend(wanter);
+        userDAL.save(target);
+        userDAL.save(wanter);
+        return true;
+    }
+
+    @Override
+    public boolean denyRequest(User target, User wanter) {
+        target.removeRequest(wanter);
+        wanter.removeWait(target);
+        userDAL.save(target);
+        userDAL.save(wanter);
+        return true;
+    }
+
+    @Override
+    public boolean cancelRequest(User target, User wanter) {
+        target.removeRequest(wanter);
+        wanter.removeWait(target);
+        userDAL.save(target);
+        userDAL.save(wanter);
+        return true;
+    }
+
+    @Override
+    public boolean removeFriend(User target, User wanter) {
+        target.removeFiend(wanter);
+        wanter.removeFiend(target);
+        userDAL.save(target);
+        userDAL.save(wanter);
+        return true;
+    }
 }
