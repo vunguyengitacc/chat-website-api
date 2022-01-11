@@ -1,6 +1,7 @@
 package com.anhvu.it.chatapp.controller;
 
 import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.dto.UserDTO;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import com.anhvu.it.chatapp.utility.payload.request.PasswordUpdateRequest;
@@ -11,7 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
@@ -24,52 +28,56 @@ public class UserController {
     PasswordEncoder bCryptPasswordEncoder ;
 
     @GetMapping("/search")
-    public ResponseEntity<MainResponse<List<User>>> searchUsers(@RequestParam String term) {
-        MainResponse<List<User>> mainResponse;
+    public ResponseEntity<MainResponse<Set<UserDTO>>> searchUsers(@RequestParam String term) {
+        MainResponse<Set<UserDTO>> mainResponse;
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
         List<User> lstUsers = userService.search(term);
         lstUsers.remove(user);
-        mainResponse = new MainResponse<List<User>>(lstUsers, "SUCCESS");
+        Set<UserDTO> lstRes = new HashSet<UserDTO>();
+        for (User i : lstUsers) {
+            UserDTO temp = new UserDTO();
+            temp.convert(i);
+            lstRes.add(temp);
+        }
+        mainResponse = new MainResponse<Set<UserDTO>>(lstRes, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MainResponse<User>> getOneUser(@PathVariable Long id) {
-        MainResponse<User> mainResponse;
+    public ResponseEntity<MainResponse<UserDTO>> getOneUser(@PathVariable Long id) {
+        MainResponse<UserDTO> mainResponse;
         User user = userService.getById(id);
-        mainResponse = new MainResponse<User>(user, "SUCCESS");
+        UserDTO res = new UserDTO();
+        res.convert(user);
+        mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
 
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MainResponse<User>> getMe() {
+    public ResponseEntity<MainResponse<UserDTO>> getMe() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
-        System.out.println(user.getName());
-        MainResponse<User> mainResponse = new MainResponse<User>(user, "SUCCESS");
+        UserDTO res = new UserDTO(user);
+        MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @PutMapping("/me")
-    public ResponseEntity<MainResponse<User>> updateMe(@RequestBody User userUpdateData) {
+    public ResponseEntity<MainResponse<UserDTO>> updateMe(@RequestBody User userUpdateData) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userService.getByUsername(username);
-        System.out.println(user.getUsername());
         user.update(userUpdateData);
-        System.out.println(user.getName());
-        System.out.println(user.getAddress());
-        System.out.println(user.getEmail());
-        System.out.println(user.getPhone());
         User updatedUser = userService.saveOne(user);
-        MainResponse<User> mainResponse = new MainResponse<User>(updatedUser, "SUCCESS");
+        UserDTO res = new UserDTO(updatedUser);
+        MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @PutMapping("/me/password")
-    public ResponseEntity<MainResponse<User>> updateMe(@RequestBody PasswordUpdateRequest data) {
+    public ResponseEntity<MainResponse<UserDTO>> updateMe(@RequestBody PasswordUpdateRequest data) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
         if(bCryptPasswordEncoder.matches(data.getCurrentPassword() ,user.getPassword())){
@@ -77,7 +85,8 @@ public class UserController {
         }
         else throw new RuntimeException("Wrong current password");
         User updatedUser = userService.saveOne(user);
-        MainResponse<User> mainResponse = new MainResponse<User>(updatedUser, "SUCCESS");
+        UserDTO res = new UserDTO(updatedUser);
+        MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
@@ -85,10 +94,9 @@ public class UserController {
     public ResponseEntity<MainResponse<Boolean>> sendRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        System.out.println(targetId);
-        User user = userService.getByUsername(username);
+        User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
-        userService.sendRequest(target, user);
+        userService.sendRequest(target, me);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
@@ -96,9 +104,9 @@ public class UserController {
     @PutMapping("/me/request/{targetId}")
     public ResponseEntity<MainResponse<Boolean>> acceptRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.getByUsername(username);
+        User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
-        userService.acceptRequest(user, target);
+        userService.acceptRequest(target, me);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
@@ -106,9 +114,9 @@ public class UserController {
     @DeleteMapping("/me/request/{targetId}")
     public ResponseEntity<MainResponse<Boolean>> denyRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.getByUsername(username);
+        User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
-        userService.denyRequest(target, user);
+        userService.denyRequest(target, me);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
@@ -116,9 +124,9 @@ public class UserController {
     @DeleteMapping("/me/request/{targetId}/cancel")
     public ResponseEntity<MainResponse<Boolean>> cancelRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.getByUsername(username);
+        User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
-        userService.cancelRequest(target, user);
+        userService.cancelRequest(target, me);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
@@ -126,9 +134,9 @@ public class UserController {
     @DeleteMapping("/me/friend/{targetId}")
     public ResponseEntity<MainResponse<Boolean>> removeFriend(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.getByUsername(username);
+        User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
-        userService.removeFriend(target, user);
+        userService.removeFriend(target, me);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }

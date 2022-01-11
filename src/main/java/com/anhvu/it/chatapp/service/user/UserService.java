@@ -15,13 +15,13 @@ public interface UserService {
 
     public List<User> search(String term);
 
-    public boolean sendRequest(User target, User wanter);
+    public boolean sendRequest(User target, User me);
 
-    public boolean acceptRequest(User target, User wanter);
+    public boolean acceptRequest(User target, User me);
 
-    public boolean denyRequest(User target, User wanter);
+    public boolean denyRequest(User target, User me);
 
-    public boolean cancelRequest(User target, User wanter);
+    public boolean cancelRequest(User target, User me);
 
-    public boolean removeFriend(User target, User wanter);
+    public boolean removeFriend(User target, User me);
 }

@@ -76,49 +76,49 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean sendRequest(User target, User wanter) {
-        target.addRequest(wanter);
-        wanter.addWait(target);
+    public boolean sendRequest(User target, User me) {
+        target.addRequest(me);
+        me.addWait(target);
         userDAL.save(target);
-        userDAL.save(wanter);
+        userDAL.save(me);
         return true;
     }
 
     @Override
-    public boolean acceptRequest(User target, User wanter) {
-        target.removeRequest(wanter);
-        wanter.removeWait(target);
-        wanter.addFriend(target);
-        target.addFriend(wanter);
+    public boolean acceptRequest(User target, User me) {
+        target.removeWait(me);
+        me.removeRequest(target);
+        me.addFriend(target);
+        target.addFriend(me);
         userDAL.save(target);
-        userDAL.save(wanter);
+        userDAL.save(me);
         return true;
     }
 
     @Override
-    public boolean denyRequest(User target, User wanter) {
-        target.removeRequest(wanter);
-        wanter.removeWait(target);
+    public boolean denyRequest(User target, User me) {
+        target.removeWait(me);
+        me.removeRequest(target);
         userDAL.save(target);
-        userDAL.save(wanter);
+        userDAL.save(me);
         return true;
     }
 
     @Override
-    public boolean cancelRequest(User target, User wanter) {
-        target.removeRequest(wanter);
-        wanter.removeWait(target);
+    public boolean cancelRequest(User target, User me) {
+        target.removeRequest(me);
+        me.removeWait(target);
         userDAL.save(target);
-        userDAL.save(wanter);
+        userDAL.save(me);
         return true;
     }
 
     @Override
-    public boolean removeFriend(User target, User wanter) {
-        target.removeFiend(wanter);
-        wanter.removeFiend(target);
+    public boolean removeFriend(User target, User me) {
+        target.removeFiend(me);
+        me.removeFiend(target);
         userDAL.save(target);
-        userDAL.save(wanter);
+        userDAL.save(me);
         return true;
     }
 }

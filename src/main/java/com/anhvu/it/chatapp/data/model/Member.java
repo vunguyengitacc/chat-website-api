@@ -1,6 +1,7 @@
 package com.anhvu.it.chatapp.data.model;
 
 import com.anhvu.it.chatapp.data.model.id.MemberID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -30,6 +31,7 @@ public class Member implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
+    @JsonBackReference
     private User user;
 
     @Column(name = "role_id")
