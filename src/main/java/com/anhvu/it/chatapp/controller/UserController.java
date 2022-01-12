@@ -8,11 +8,9 @@ import com.anhvu.it.chatapp.utility.payload.request.PasswordUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +23,7 @@ public class UserController {
     UserService userService;
 
     @Autowired
-    PasswordEncoder bCryptPasswordEncoder ;
+    PasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/search")
     public ResponseEntity<MainResponse<Set<UserDTO>>> searchUsers(@RequestParam String term) {
@@ -64,6 +62,18 @@ public class UserController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
+    @GetMapping("/me/friend")
+    public ResponseEntity<MainResponse<Set<UserDTO>>> getMyFriend() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.getByUsername(username);
+        Set<UserDTO> res = new HashSet<UserDTO>();
+        for (User item : user.getFriends()) {
+            res.add(new UserDTO(item));
+        }
+        MainResponse<Set<UserDTO>> mainResponse = new MainResponse<Set<UserDTO>>(res, "SUCCESS");
+        return ResponseEntity.ok().body(mainResponse);
+    }
+
     @PutMapping("/me")
     public ResponseEntity<MainResponse<UserDTO>> updateMe(@RequestBody User userUpdateData) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -80,10 +90,9 @@ public class UserController {
     public ResponseEntity<MainResponse<UserDTO>> updateMe(@RequestBody PasswordUpdateRequest data) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getByUsername(username);
-        if(bCryptPasswordEncoder.matches(data.getCurrentPassword() ,user.getPassword())){
+        if (bCryptPasswordEncoder.matches(data.getCurrentPassword(), user.getPassword())) {
             user.setPassword(data.getNewPassword());
-        }
-        else throw new RuntimeException("Wrong current password");
+        } else throw new RuntimeException("Wrong current password");
         User updatedUser = userService.saveOne(user);
         UserDTO res = new UserDTO(updatedUser);
         MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
