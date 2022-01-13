@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -96,6 +97,36 @@ public class UserController {
         User updatedUser = userService.saveOne(user, true);
         UserDTO res = new UserDTO(updatedUser);
         MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
+        return ResponseEntity.ok().body(mainResponse);
+    }
+
+    @GetMapping("/me/request")
+    public ResponseEntity<MainResponse<List<UserDTO>>> getMyRequest() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User me = userService.getByUsername(username);
+
+        List<UserDTO> res = new ArrayList<UserDTO>();
+        for(User i : me.getRequests()){
+            res.add(new UserDTO(i));
+        }
+
+        MainResponse<List<UserDTO>> mainResponse = new MainResponse<List<UserDTO>>(res, "SUCCESS");
+        return ResponseEntity.ok().body(mainResponse);
+    }
+
+    @GetMapping("/me/wait")
+    public ResponseEntity<MainResponse<List<UserDTO>>> getMyWaiting() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User me = userService.getByUsername(username);
+
+        List<UserDTO> res = new ArrayList<UserDTO>();
+        for(User i : me.getWaits()){
+            res.add(new UserDTO(i));
+        }
+
+        MainResponse<List<UserDTO>> mainResponse = new MainResponse<List<UserDTO>>(res, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
