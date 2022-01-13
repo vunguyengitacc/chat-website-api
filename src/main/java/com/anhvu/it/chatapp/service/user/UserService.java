@@ -11,7 +11,9 @@ public interface UserService {
 
     public User getById(Long id);
 
-    public User saveOne(User user);
+    public User createOne(User user);
+
+    public User saveOne(User user, boolean isNewPassword);
 
     public List<User> search(String term);
 

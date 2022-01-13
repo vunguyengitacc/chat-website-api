@@ -36,7 +36,7 @@ public class AuthController {
         temp.setPassword(user.getPassword());
         temp.setName(user.getName());
         temp.setAvatarURI(user.getAvatarURI());
-        User rs = userService.saveOne(temp);
+        User rs = userService.createOne(temp);
 
         JWTProvider jwtProvider = new JWTProvider();
         jwtProvider.setData(rs.getUsername());

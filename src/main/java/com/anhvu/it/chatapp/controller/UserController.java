@@ -80,7 +80,7 @@ public class UserController {
 
         User user = userService.getByUsername(username);
         user.update(userUpdateData);
-        User updatedUser = userService.saveOne(user);
+        User updatedUser = userService.saveOne(user, false);
         UserDTO res = new UserDTO(updatedUser);
         MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
@@ -93,7 +93,7 @@ public class UserController {
         if (bCryptPasswordEncoder.matches(data.getCurrentPassword(), user.getPassword())) {
             user.setPassword(data.getNewPassword());
         } else throw new RuntimeException("Wrong current password");
-        User updatedUser = userService.saveOne(user);
+        User updatedUser = userService.saveOne(user, true);
         UserDTO res = new UserDTO(updatedUser);
         MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);

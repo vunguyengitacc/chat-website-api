@@ -3,12 +3,16 @@ package com.anhvu.it.chatapp.data.model;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -16,7 +20,7 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"password"})
 @Getter
 @Setter
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
     @Id
     @Column(name = "_id")
@@ -166,4 +170,29 @@ public class User implements Serializable {
         throw new RuntimeException("Friend waiting is not exist");
     }
 
+    //Spring security
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
