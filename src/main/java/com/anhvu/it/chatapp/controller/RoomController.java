@@ -3,16 +3,19 @@ package com.anhvu.it.chatapp.controller;
 import com.anhvu.it.chatapp.data.model.Member;
 import com.anhvu.it.chatapp.data.model.Room;
 import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.dto.RoomDTO;
 import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.request.RoomCreatorRequest;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import com.anhvu.it.chatapp.utility.type.RoleType;
+import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -26,18 +29,44 @@ public class RoomController {
     UserService userService;
 
     @GetMapping("")
-    public ResponseEntity<MainResponse<List<Room>>> getAll() {
-        MainResponse<List<Room>> mainResponse;
-        mainResponse = new MainResponse<List<Room>>(roomService.getAll(), "SUCCESS");
+    public ResponseEntity<MainResponse<List<RoomDTO>>> getAll() {
+        MainResponse<List<RoomDTO>> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        List<Room> data = roomService.getByUser(currentUser);
+        List<RoomDTO> rs = new ArrayList<RoomDTO>();
+        for (Room i : data) {
+            if (i.getType() == RoomType.FRIEND) {
+                for (Member j : i.getMembers()) {
+                    if (j.getUser().getId() != currentUser.getId()) {
+                        i.setName(j.getUser().getName());
+                        i.setCoverImage(j.getUser().getAvatarURI());
+                    }
+                }
+            }
+            rs.add(new RoomDTO(i));
+        }
+        mainResponse = new MainResponse<List<RoomDTO>>(rs, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<MainResponse<List<Room>>> search(@RequestParam String term) {
-        MainResponse<List<Room>> mainResponse;
+    public ResponseEntity<MainResponse<List<RoomDTO>>> search(@RequestParam String term) {
+        MainResponse<List<RoomDTO>> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         List<Room> lstRoom = roomService.search(term);
-
-        mainResponse = new MainResponse<List<Room>>(lstRoom, "SUCCESS");
+        List<RoomDTO> rs = new ArrayList<RoomDTO>();
+        for (Room i : lstRoom) {
+            if (i.getType() == RoomType.FRIEND) {
+                for (Member j : i.getMembers()) {
+                    if (j.getUser().getId() != currentUser.getId()) {
+                        i.setName(j.getUser().getName());
+                        i.setCoverImage(j.getUser().getAvatarURI());
+                    }
+                }
+            }
+            rs.add(new RoomDTO(i));
+        }
+        mainResponse = new MainResponse<List<RoomDTO>>(rs, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
@@ -70,7 +99,8 @@ public class RoomController {
                 User u = userService.getById(i);
                 Member mem = new Member(room, u, RoleType.MEMBER);
                 room.addMember(mem);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
         room = roomService.saveOne(room);
         mainResponse = new MainResponse<Room>(room, "SUCCESS");

@@ -46,6 +46,9 @@ public class Room implements Serializable {
     @Column(name = "status", nullable = false)
     private RoomStatus status;
 
+    @Column(name = "cover_image")
+    private String coverImage;
+
     //Constructors
 
     public Room(String name) {

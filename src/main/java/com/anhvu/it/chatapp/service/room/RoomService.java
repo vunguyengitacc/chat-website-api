@@ -8,6 +8,8 @@ import java.util.List;
 public interface RoomService {
     public List<Room> getAll();
 
+    public List<Room> getByUser(User bean);
+
     public Room getById(long id);
 
     public List<Room> search(String term);

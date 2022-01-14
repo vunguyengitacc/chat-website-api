@@ -23,6 +23,11 @@ public class RoomServiceImplement implements RoomService {
     }
 
     @Override
+    public List<Room> getByUser(User bean) {
+        return roomDAL.findActiveRoomByUser(bean.getId());
+    }
+
+    @Override
     public Room getById(long id) {
         return roomDAL.findById(id);
     }
