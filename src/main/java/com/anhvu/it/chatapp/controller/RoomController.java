@@ -70,14 +70,26 @@ public class RoomController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
+    @GetMapping("/friend/{id}")
+    public ResponseEntity<MainResponse<RoomDTO>> getFriendRoom(@PathVariable("id") Long id) {
+        MainResponse<RoomDTO> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User target = userService.getById(id);
+
+        Room data = roomService.getFriendRoom(currentUser, target);
+
+        mainResponse = new MainResponse<RoomDTO>(new RoomDTO(data), "SUCCESS");
+        return ResponseEntity.ok().body(mainResponse);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<MainResponse<Room>> getById(@PathVariable Long id) {
-        MainResponse<Room> mainResponse;
+    public ResponseEntity<MainResponse<RoomDTO>> getById(@PathVariable Long id) {
+        MainResponse<RoomDTO> mainResponse;
         User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Room room = roomService.getById(id);
         for (Member i : room.getMembers()) {
             if (i.getUser().getId() == currentUser.getId()) {
-                mainResponse = new MainResponse<Room>(room, "SUCCESS");
+                mainResponse = new MainResponse<RoomDTO>(new RoomDTO(room), "SUCCESS");
                 return ResponseEntity.ok().body(mainResponse);
             }
         }
@@ -85,8 +97,8 @@ public class RoomController {
     }
 
     @PostMapping("")
-    public ResponseEntity<MainResponse<Room>> addOne(@RequestBody RoomCreatorRequest data) {
-        MainResponse<Room> mainResponse;
+    public ResponseEntity<MainResponse<RoomDTO>> addOne(@RequestBody RoomCreatorRequest data) {
+        MainResponse<RoomDTO> mainResponse;
         User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Room temp = data.getRoom();
         temp.setMembers(new HashSet<Member>());
@@ -103,7 +115,7 @@ public class RoomController {
             }
         }
         room = roomService.saveOne(room);
-        mainResponse = new MainResponse<Room>(room, "SUCCESS");
+        mainResponse = new MainResponse<RoomDTO>(new RoomDTO(room), "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 

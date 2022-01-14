@@ -13,7 +13,7 @@ import java.util.Set;
 public interface RoomDAL extends CrudRepository<Room, Long> {
     public List<Room> findAll();
 
-    @Query("SELECT p FROM Room p WHERE p.status = ON_ACTIVE")
+    @Query("SELECT p FROM Room p WHERE p.status = 1")
     public Room findById(long id);
 
     @Query("SELECT p FROM Room p LEFT JOIN p.members s WHERE p.type = 2 AND s.user.id in :ids")

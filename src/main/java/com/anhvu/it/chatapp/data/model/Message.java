@@ -15,12 +15,7 @@ import java.util.Date;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Getter
 @Setter
-public class Message implements Serializable {
-
-    @Id
-    @Column(name = "_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Message extends BaseEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -39,6 +34,5 @@ public class Message implements Serializable {
 
     @Column(name = "type")
     private MessageType type;
-
 
 }

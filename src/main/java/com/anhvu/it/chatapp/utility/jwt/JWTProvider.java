@@ -25,7 +25,6 @@ public class JWTProvider {
     private Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
 
     public String generate() {
-
         String access_token = JWT.create()
                 .withSubject(this.data)
                 .withExpiresAt(new Date(System.currentTimeMillis() + this.nextExpired))

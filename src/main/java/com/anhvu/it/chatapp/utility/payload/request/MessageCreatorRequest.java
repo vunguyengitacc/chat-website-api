@@ -12,5 +12,4 @@ import lombok.Setter;
 public class MessageCreatorRequest {
     private String content;
     private Long roomId;
-    private int typeId;
 }

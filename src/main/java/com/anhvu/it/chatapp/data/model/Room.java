@@ -24,12 +24,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Room implements Serializable {
-
-    @Id
-    @Column(name = "_id")
-    @GeneratedValue
-    private Long id;
+public class Room extends BaseEntity implements Serializable {
 
     @Column(length = 50, nullable = true)
     private String name;
@@ -39,6 +34,9 @@ public class Room implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "room", cascade = CascadeType.ALL)
     private Set<Member> members;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room", cascade = CascadeType.ALL)
+    private Set<Message> messages;
 
     @Column(name = "type", nullable = false)
     private RoomType type;

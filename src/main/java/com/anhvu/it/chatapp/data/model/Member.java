@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Member implements Serializable {
 
     @EmbeddedId
@@ -52,9 +54,5 @@ public class Member implements Serializable {
         this.id = new MemberID(userId, roomId);
         this.role = type;
     }
-
-    public Member() {
-    }
-
 
 }

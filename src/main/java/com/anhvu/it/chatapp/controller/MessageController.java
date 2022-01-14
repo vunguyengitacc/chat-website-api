@@ -3,17 +3,21 @@ package com.anhvu.it.chatapp.controller;
 import com.anhvu.it.chatapp.data.model.Message;
 import com.anhvu.it.chatapp.data.model.Room;
 import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.dto.MessageDTO;
 import com.anhvu.it.chatapp.service.message.MessageService;
 import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.request.MessageCreatorRequest;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
+import com.anhvu.it.chatapp.utility.type.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -33,21 +37,28 @@ public class MessageController {
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @GetMapping("/room/{id}")
-    public ResponseEntity<MainResponse<List<Message>>> getInRoom(@PathVariable Long id) {
+    public ResponseEntity<MainResponse<List<MessageDTO>>> getInRoom(@PathVariable Long id) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userService.getByUsername(username);
         Room room = roomService.getById(id);
         if (!room.isContainsUser(currentUser))
             throw new RuntimeException("Unauthorized");
 
-        MainResponse<List<Message>> response;
+        MainResponse<List<MessageDTO>> response;
         List<Message> lstMessage = messageService.getInRoom(id);
-        response = new MainResponse<List<Message>>(lstMessage, "SUCCESS");
+
+        List<MessageDTO> rs = new ArrayList<MessageDTO>();
+
+        for(Message i : lstMessage){
+            rs.add(new MessageDTO(i));
+        }
+
+        response = new MainResponse<List<MessageDTO>>(rs, "SUCCESS");
         return ResponseEntity.ok().body(response);
     }
 
     @PostMapping()
-    public ResponseEntity<MainResponse<Message>> createOne(@RequestBody MessageCreatorRequest data) {
+    public ResponseEntity<MainResponse<MessageDTO>> createOne(@RequestBody MessageCreatorRequest data) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userService.getByUsername(username);
         Room room = roomService.getById(data.getRoomId());
@@ -55,17 +66,20 @@ public class MessageController {
         if (!room.isContainsUser(currentUser))
             throw new RuntimeException("Unauthorized");
 
-        MainResponse<Message> response;
+        MainResponse<MessageDTO> response;
 
         Message message = new Message();
         message.setOwner(currentUser);
         message.setContent(data.getContent());
         message.setRoom(room);
-        //message.setTypeId(data.getTypeId());
+        message.setType(MessageType.MESSAGE);
 
         messageService.saveOne(message);
-        simpMessagingTemplate.convertAndSend("room/"+room.getId(),  message );
-        response = new MainResponse<Message>(message, "SUCCESS");
+
+        MessageDTO rs = new MessageDTO(message);
+
+        simpMessagingTemplate.convertAndSend("room/"+room.getId(),  rs );
+        response = new MainResponse<MessageDTO>(rs, "SUCCESS");
         return ResponseEntity.ok().body(response);
     }
 

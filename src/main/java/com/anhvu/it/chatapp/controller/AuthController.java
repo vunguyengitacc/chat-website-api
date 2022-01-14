@@ -31,11 +31,12 @@ public class AuthController {
 
         if (user.getAvatarURI().equals(""))
             user.generateURI();
-        User temp = new User();
-        temp.setUsername(user.getUsername());
-        temp.setPassword(user.getPassword());
-        temp.setName(user.getName());
-        temp.setAvatarURI(user.getAvatarURI());
+
+        User temp = new User()
+                .withName(user.getName()).withAvatar(user.getAvatarURI())
+                .registerUsername(user.getUsername()).registerPassword(user.getPassword())
+                .build();
+
         User rs = userService.createOne(temp);
 
         JWTProvider jwtProvider = new JWTProvider();

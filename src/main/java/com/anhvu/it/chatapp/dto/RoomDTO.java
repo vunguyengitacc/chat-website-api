@@ -1,6 +1,7 @@
 package com.anhvu.it.chatapp.dto;
 
 import com.anhvu.it.chatapp.data.model.Member;
+import com.anhvu.it.chatapp.data.model.Message;
 import com.anhvu.it.chatapp.data.model.Room;
 import com.anhvu.it.chatapp.data.model.User;
 import com.anhvu.it.chatapp.utility.type.RoomStatus;
@@ -25,7 +26,9 @@ public class RoomDTO implements Serializable {
 
     private RoomStatus status;
 
-    private Set<Long> members;
+    private Set<Long> memberIds;
+
+    private Set<Long> messageIds;
 
     public RoomDTO(Room input) {
         this.id = input.getId();
@@ -33,9 +36,13 @@ public class RoomDTO implements Serializable {
         this.createdDate = input.getCreatedDate();
         this.type = input.getType();
         this.status = input.getStatus();
-        this.members = new HashSet<Long>();
+        this.memberIds = new HashSet<Long>();
         for (Member i : input.getMembers()) {
-            this.members.add(i.getUser().getId());
+            this.memberIds.add(i.getUser().getId());
+        }
+        this.messageIds = new HashSet<Long>();
+        for (Message i : input.getMessages()) {
+            this.messageIds.add(i.getId());
         }
     }
 

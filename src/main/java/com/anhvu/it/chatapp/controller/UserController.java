@@ -140,18 +140,18 @@ public class UserController {
     }
 
     @PostMapping("/me/request/{targetId}")
-    public ResponseEntity<MainResponse<Boolean>> sendRequest(@PathVariable Long targetId) {
+    public ResponseEntity<MainResponse> sendRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.sendRequest(target, me);
-        MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        MainResponse mainResponse = new MainResponse(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @PutMapping("/me/request/{targetId}")
-    public ResponseEntity<MainResponse<Boolean>> acceptRequest(@PathVariable Long targetId) {
+    public ResponseEntity<MainResponse> acceptRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
@@ -166,32 +166,32 @@ public class UserController {
             friendRoom.addMember(new Member(friendRoom.getId(), target.getId(), RoleType.MEMBER));
             roomService.saveOne(friendRoom);
         }
-        MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        MainResponse mainResponse = new MainResponse(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @DeleteMapping("/me/request/{targetId}")
-    public ResponseEntity<MainResponse<Boolean>> denyRequest(@PathVariable Long targetId) {
+    public ResponseEntity<MainResponse> denyRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.denyRequest(target, me);
-        MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        MainResponse mainResponse = new MainResponse(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @DeleteMapping("/me/request/{targetId}/cancel")
-    public ResponseEntity<MainResponse<Boolean>> cancelRequest(@PathVariable Long targetId) {
+    public ResponseEntity<MainResponse> cancelRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.cancelRequest(target, me);
-        MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        MainResponse mainResponse = new MainResponse(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 
     @DeleteMapping("/me/friend/{targetId}")
-    public ResponseEntity<MainResponse<Boolean>> removeFriend(@PathVariable Long targetId) {
+    public ResponseEntity<MainResponse> removeFriend(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
@@ -199,7 +199,7 @@ public class UserController {
         Room friendRoom = roomService.getFriendRoom(me, target);
 
         roomService.deleteOne(friendRoom);
-        MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        MainResponse mainResponse = new MainResponse(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
 

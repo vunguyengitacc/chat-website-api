@@ -15,7 +15,7 @@ public class MessageServiceImplement implements MessageService {
 
     @Override
     public List<Message> getInRoom(Long id) {
-        return null;
+        return messageDAL.findByRoomId(id);
     }
 
     @Override
