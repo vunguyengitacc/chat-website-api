@@ -7,6 +7,7 @@ import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.request.RoomCreatorRequest;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
+import com.anhvu.it.chatapp.utility.type.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,13 +62,13 @@ public class RoomController {
         Room temp = data.getRoom();
         temp.setMembers(new HashSet<Member>());
         Room room = roomService.saveOne(temp);
-        System.out.println(currentUser.getUsername());
-        Member owner = new Member(room, currentUser, 1);
+
+        Member owner = new Member(room, currentUser, RoleType.ADMIN);
         room.addMember(owner);
         for (Long i : data.getMembers()) {
             try {
                 User u = userService.getById(i);
-                Member mem = new Member(room, u, 1);
+                Member mem = new Member(room, u, RoleType.MEMBER);
                 room.addMember(mem);
             } catch (Exception e) {}
         }
@@ -81,9 +82,9 @@ public class RoomController {
         MainResponse<Long> mainResponse;
         User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Room room = roomService.getById(id);
-        System.out.println(room.getId());
+
         for (Member i : room.getMembers()) {
-            if (i.getRole().getId() == 1 && i.getUser().getId() == currentUser.getId()) {
+            if (i.getRole() == RoleType.ADMIN && i.getUser().getId() == currentUser.getId()) {
                 roomService.deleteById(id);
                 mainResponse = new MainResponse<Long>(id, "SUCCESS");
                 return ResponseEntity.ok().body(mainResponse);

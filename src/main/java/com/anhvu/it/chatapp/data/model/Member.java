@@ -1,6 +1,7 @@
 package com.anhvu.it.chatapp.data.model;
 
 import com.anhvu.it.chatapp.data.model.id.MemberID;
+import com.anhvu.it.chatapp.utility.type.RoleType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,27 +35,22 @@ public class Member implements Serializable {
     @JsonBackReference
     private User user;
 
-    @Column(name = "role_id")
-    @JsonIgnore
-    private int roleId;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", nullable = false, insertable = false, updatable = false)
-    private Role role;
+    @Column(name = "type")
+    private RoleType role;
 
     //Constructors
 
-    public Member(Room room, User user, int roleId) {
+    public Member(Room room, User user, RoleType type) {
         this.id = new MemberID(user.getId(), room.getId());
         this.room = room;
         this.user = user;
-        this.roleId = roleId;
+        this.role = type;
     }
 
 
-    public Member(Long roomId, Long userId, int roleId) {
+    public Member(Long roomId, Long userId, RoleType type) {
         this.id = new MemberID(userId, roomId);
-        this.roleId = roleId;
+        this.role = type;
     }
 
     public Member() {

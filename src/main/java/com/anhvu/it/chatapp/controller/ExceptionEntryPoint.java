@@ -42,6 +42,7 @@ public class ExceptionEntryPoint {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MainResponse> exceptionHandler(Exception e) {
         MainResponse<User> mainResponse;
+        e.printStackTrace();
         mainResponse = new MainResponse("" + e.getMessage(), "FAILED", true);
         return ResponseEntity.internalServerError().body(mainResponse);
     }

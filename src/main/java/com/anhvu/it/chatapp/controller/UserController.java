@@ -1,10 +1,16 @@
 package com.anhvu.it.chatapp.controller;
 
+import com.anhvu.it.chatapp.data.model.Member;
+import com.anhvu.it.chatapp.data.model.Room;
 import com.anhvu.it.chatapp.data.model.User;
 import com.anhvu.it.chatapp.dto.UserDTO;
+import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import com.anhvu.it.chatapp.utility.payload.request.PasswordUpdateRequest;
+import com.anhvu.it.chatapp.utility.type.RoleType;
+import com.anhvu.it.chatapp.utility.type.RoomStatus;
+import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +28,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RoomService roomService;
 
     @Autowired
     PasswordEncoder bCryptPasswordEncoder;
@@ -147,6 +156,16 @@ public class UserController {
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.acceptRequest(target, me);
+        if(!roomService.restartRoom(target, me)){
+            Room friendRoom = new Room();
+            friendRoom.setType(RoomType.FRIEND);
+            friendRoom.setStatus(RoomStatus.ON_ACTIVE);
+            friendRoom = roomService.saveOne(friendRoom);
+            friendRoom.setMembers(new HashSet<Member>());
+            friendRoom.addMember(new Member(friendRoom.getId(), me.getId(), RoleType.MEMBER));
+            friendRoom.addMember(new Member(friendRoom.getId(), target.getId(), RoleType.MEMBER));
+            roomService.saveOne(friendRoom);
+        }
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
@@ -177,6 +196,9 @@ public class UserController {
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.removeFriend(target, me);
+        Room friendRoom = roomService.getFriendRoom(me, target);
+
+        roomService.deleteOne(friendRoom);
         MainResponse<Boolean> mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }

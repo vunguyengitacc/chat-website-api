@@ -1,5 +1,6 @@
 package com.anhvu.it.chatapp.data.model;
 
+import com.anhvu.it.chatapp.utility.type.MessageType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
@@ -35,31 +36,9 @@ public class Message implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdDate;
 
-//    @ManyToOne
-//    @JoinColumn(name = "type_id", nullable = true)
-//    private MessageType messageType;
 
-//    @Column(name = "type_id")
-//    private int typeId;
+    @Column(name = "type")
+    private MessageType type;
 
-    //Constructors
-
-    public Message() {
-    }
-
-    public Message(User owner, Room room, String content, int typeId) {
-        this.owner = owner;
-        this.room = room;
-        this.content = content;
-        //this.typeId = typeId;
-    }
-
-    public Message(User owner, Room room, String content, MessageType type) {
-        this.owner = owner;
-        this.room = room;
-        this.content = content;
-        //this.typeId = type.getId();
-       //this.messageType = type;
-    }
 
 }

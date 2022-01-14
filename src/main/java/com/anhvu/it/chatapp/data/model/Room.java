@@ -1,8 +1,12 @@
 package com.anhvu.it.chatapp.data.model;
 
+import com.anhvu.it.chatapp.utility.type.RoomStatus;
+import com.anhvu.it.chatapp.utility.type.RoomType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -18,6 +22,8 @@ import java.util.Set;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Room implements Serializable {
 
     @Id
@@ -25,9 +31,7 @@ public class Room implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(length = 100, nullable = false)
-    @NotEmpty(message = "The room name is required")
-    @Size(min = 8, max = 50, message = "The room name length must be between 8 and 50 characters")
+    @Column(length = 50, nullable = true)
     private String name;
 
     @Temporal(TemporalType.DATE)
@@ -36,10 +40,13 @@ public class Room implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "room", cascade = CascadeType.ALL)
     private Set<Member> members;
 
-    //Constructors
+    @Column(name = "type", nullable = false)
+    private RoomType type;
 
-    public Room() {
-    }
+    @Column(name = "status", nullable = false)
+    private RoomStatus status;
+
+    //Constructors
 
     public Room(String name) {
         this.name = name;
