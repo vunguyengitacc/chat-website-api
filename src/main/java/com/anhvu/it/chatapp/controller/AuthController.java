@@ -32,7 +32,7 @@ public class AuthController {
         if (user.getAvatarURI().equals(""))
             user.generateURI();
 
-        User temp = new User()
+        User temp = new User().getBuilder()
                 .withName(user.getName()).withAvatar(user.getAvatarURI())
                 .registerUsername(user.getUsername()).registerPassword(user.getPassword())
                 .build();

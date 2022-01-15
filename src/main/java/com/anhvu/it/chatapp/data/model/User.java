@@ -1,5 +1,7 @@
 package com.anhvu.it.chatapp.data.model;
 
+import com.anhvu.it.chatapp.utility.builder.user.UserBuilder;
+import com.anhvu.it.chatapp.utility.builder.user.UserBuilderImplement;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,10 +32,6 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     private String username;
 
     @Column(length = 200, nullable = false)
-//    @Pattern(regexp = "\"^(?=.*[A-Za-z])[A-Za-z\\d@$!%*#?&]$\"", message = "At least one letter")
-//    @Pattern(regexp = "\"^(?=.*\\d)[A-Za-z\\d@$!%*#?&]$\"", message = "At least one number")
-//    @Pattern(regexp = "\"^(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]$\"", message = "At least one special character")
-    //   @Size(min = 8, max = 20, message = "The password length must be between 8 and 20 characters")
     @NotEmpty(message = "The password is required")
     private String password;
 
@@ -83,117 +81,8 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     @Column(length = 300)
     private String bio;
 
-    //Builder
-
-    public User withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public User withEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public User withAvatar(String avatarURI) {
-        this.avatarURI = avatarURI;
-        return this;
-    }
-
-    public User withPhone(String phone) {
-        this.phone = phone;
-        return this;
-    }
-
-    public User withAddress(String address) {
-        this.address = address;
-        return this;
-    }
-
-    public User withBio(String bio) {
-        this.bio = bio;
-        return this;
-    }
-
-    public User registerUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
-    public User registerPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public User addFriend(User target) {
-        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
-        if (this.friends == null) this.friends = new HashSet<>();
-        this.friends.add(target);
-        return this;
-    }
-
-    public User addRequest(User target) {
-        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
-        if (this.requests == null) this.requests = new HashSet<>();
-        this.requests.add(target);
-        return this;
-    }
-
-    public User addWait(User target) {
-        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
-        if (this.waits == null) this.waits = new HashSet<>();
-        this.waits.add(target);
-        return this;
-    }
-
-    public User removeRequest(User target) {
-        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
-        if (this.requests == null) {
-            this.requests = new HashSet<>();
-            throw new RuntimeException("Friend request is not exist");
-        }
-        for (User item : this.requests) {
-            if (item.getUsername().equals(target.getUsername())) {
-                this.requests.remove(target);
-                return this;
-            }
-        }
-        throw new RuntimeException("Friend request is not exist");
-    }
-
-    public User removeFiend(User target) {
-        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
-        if (this.friends == null) {
-            this.friends = new HashSet<>();
-            throw new RuntimeException("Friend is not exist");
-        }
-        for (User item : this.friends) {
-            if (item.getUsername().equals(target.getUsername())) {
-                this.friends.remove(target);
-                return this;
-            }
-        }
-        throw new RuntimeException("Friend is not exist");
-    }
-
-    public User removeWait(User target) {
-        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
-        if (this.waits == null) {
-            this.waits = new HashSet<>();
-            throw new RuntimeException("Friend waiting is not exist");
-        }
-        for (User item : this.waits) {
-            if (item.getUsername().equals(target.getUsername())) {
-                this.waits.remove(target);
-                return this;
-            }
-        }
-        throw new RuntimeException("Friend waiting is not exist");
-    }
-
-    public User build() {
-        return this;
-    }
+    @Transient
+    private UserBuilder builder = new UserBuilderImplement(this);
 
     //Other
     public void update(User updateData) {
@@ -213,6 +102,65 @@ public class User extends BaseEntity implements Serializable, UserDetails {
             this.bio = updateData.getBio();
     }
 
+    public void addFriend(User target) {
+        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
+        if (this.friends == null) this.friends = new HashSet<>();
+        this.friends.add(target);
+    }
+
+    public void addRequest(User target) {
+        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
+        if (this.requests == null) this.requests = new HashSet<>();
+        this.requests.add(target);
+    }
+
+    public void addWait(User target) {
+        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
+        if (this.waits == null) this.waits = new HashSet<>();
+        this.waits.add(target);
+    }
+
+    public void removeRequest(User target) {
+        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
+        if (this.requests == null) {
+            this.requests = new HashSet<>();
+            throw new RuntimeException("Friend request is not exist");
+        }
+        for (User item : this.requests) {
+            if (item.getUsername().equals(target.getUsername())) {
+                this.requests.remove(target);
+            }
+        }
+        throw new RuntimeException("Friend request is not exist");
+    }
+
+    public void removeFiend(User target) {
+        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
+        if (this.friends == null) {
+            this.friends = new HashSet<>();
+            throw new RuntimeException("Friend is not exist");
+        }
+        for (User item : this.friends) {
+            if (item.getUsername().equals(target.getUsername())) {
+                this.friends.remove(target);
+            }
+        }
+        throw new RuntimeException("Friend is not exist");
+    }
+
+    public void removeWait(User target) {
+        if (target.getUsername().equals(this.username)) throw new RuntimeException("You can't add you as a friend");
+        if (this.waits == null) {
+            this.waits = new HashSet<>();
+            throw new RuntimeException("Friend waiting is not exist");
+        }
+        for (User item : this.waits) {
+            if (item.getUsername().equals(target.getUsername())) {
+                this.waits.remove(target);
+            }
+        }
+        throw new RuntimeException("Friend waiting is not exist");
+    }
 
     //Spring security
     @Override

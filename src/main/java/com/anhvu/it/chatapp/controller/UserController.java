@@ -103,6 +103,7 @@ public class UserController {
         if (bCryptPasswordEncoder.matches(data.getCurrentPassword(), user.getPassword())) {
             user.setPassword(data.getNewPassword());
         } else throw new RuntimeException("Wrong current password");
+        user.getBuilder().validate();
         User updatedUser = userService.saveOne(user, true);
         UserDTO res = new UserDTO(updatedUser);
         MainResponse<UserDTO> mainResponse = new MainResponse<UserDTO>(res, "SUCCESS");
