@@ -12,6 +12,7 @@ import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import com.anhvu.it.chatapp.utility.type.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class MessageController {
 
         List<MessageDTO> rs = new ArrayList<MessageDTO>();
 
-        for(Message i : lstMessage){
+        for (Message i : lstMessage) {
             rs.add(new MessageDTO(i));
         }
 
@@ -57,6 +58,8 @@ public class MessageController {
         return ResponseEntity.ok().body(response);
     }
 
+
+    @MessageMapping("/message.create")
     @PostMapping()
     public ResponseEntity<MainResponse<MessageDTO>> createOne(@RequestBody MessageCreatorRequest data) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -74,11 +77,11 @@ public class MessageController {
         message.setRoom(room);
         message.setType(MessageType.MESSAGE);
 
-        messageService.saveOne(message);
+//        messageService.saveOne(message);
 
         MessageDTO rs = new MessageDTO(message);
 
-        simpMessagingTemplate.convertAndSend("room/"+room.getId(),  rs );
+        simpMessagingTemplate.convertAndSend("/room/"+room.getId(), rs);
         response = new MainResponse<MessageDTO>(rs, "SUCCESS");
         return ResponseEntity.ok().body(response);
     }

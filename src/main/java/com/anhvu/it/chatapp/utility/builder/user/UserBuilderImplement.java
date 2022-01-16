@@ -1,6 +1,5 @@
 package com.anhvu.it.chatapp.utility.builder.user;
 
-import com.anhvu.it.chatapp.data.model.Member;
 import com.anhvu.it.chatapp.data.model.User;
 
 import java.util.ArrayList;
@@ -21,8 +20,6 @@ public class UserBuilderImplement implements UserBuilder {
     private String email;
 
     private String avatarURI;
-
-    private Set<Member> members;
 
     private Set<User> friends;
 

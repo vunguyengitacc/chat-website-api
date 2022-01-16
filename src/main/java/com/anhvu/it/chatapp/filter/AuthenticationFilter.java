@@ -21,7 +21,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (!request.getServletPath().contains("/auth/")) {
+        if (!request.getServletPath().contains("/auth/")&&!request.getServletPath().contains("/chat/")) {
             try {
                 String authorization = request.getHeader("Authorization");
                 if (authorization != null && authorization.startsWith("Bearer ")) {
