@@ -1,21 +1,26 @@
 package com.anhvu.it.chatapp.service.room;
 
+import com.anhvu.it.chatapp.data.access.MemberDAL;
 import com.anhvu.it.chatapp.data.access.RoomDAL;
+import com.anhvu.it.chatapp.data.model.Member;
 import com.anhvu.it.chatapp.data.model.Room;
 import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.data.model.id.MemberID;
 import com.anhvu.it.chatapp.utility.type.RoomStatus;
+import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class RoomServiceImplement implements RoomService {
 
     @Autowired
     RoomDAL roomDAL;
+
 
     @Override
     public List<Room> getAll() {
@@ -53,10 +58,10 @@ public class RoomServiceImplement implements RoomService {
 
     @Override
     public Room getFriendRoom(User user1, User user2) {
-        Set<Long> value = new HashSet<>();
-        value.add(user1.getId());
-        value.add(user2.getId());
-        return roomDAL.findFriend(value);
+        List<Room> rooms = roomDAL.findActiveRoomByUser(user1.getId());
+        List<Room> afterFilter = rooms.stream().filter(i -> i.getType() == RoomType.FRIEND && i.getStatus() == RoomStatus.ON_ACTIVE && i.getMembers().stream().filter(e -> e.getUser().getId() == user2.getId()).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
+        Room temp = afterFilter.get(0);
+        return temp;
     }
 
     @Override
@@ -67,10 +72,10 @@ public class RoomServiceImplement implements RoomService {
 
     @Override
     public boolean restartRoom(User user1, User user2) {
-        try { Set<Long> value = new HashSet<>();
-            value.add(user1.getId());
-            value.add(user2.getId());
-            Room room = roomDAL.findDeletedFriendRoom(value);
+        try {
+            List<Room> rooms = roomDAL.findDeletedRoomByUser(user1.getId());
+            List<Room> afterFilter = rooms.stream().filter(i -> i.getType() == RoomType.FRIEND && i.getStatus() == RoomStatus.ON_DELETE && i.getMembers().stream().filter(e -> e.getUser().getId() == user2.getId()).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
+            Room room = afterFilter.get(0);
             room.setStatus(RoomStatus.ON_ACTIVE);
             roomDAL.save(room);
             return true;

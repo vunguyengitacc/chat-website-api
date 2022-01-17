@@ -41,15 +41,19 @@ public class RoomDTO implements Serializable {
             this.memberIds.add(i.getUser().getId());
         }
         this.messageIds = new HashSet<Long>();
+        if (input.getMessages() == null)
+            return;
         Iterator<Message> iterator = input.getMessages().stream()
                 .sorted((a, b) -> a.getCreatedDate().compareTo(b.getCreatedDate()))
                 .iterator();
         Message temp = new Message();
+        boolean hasTemp = false;
         while (iterator.hasNext()) {
+            hasTemp = true;
             temp = iterator.next();
             this.messageIds.add(temp.getId());
         }
-        this.lastMessage = new MessageDTO(temp);
+        if (hasTemp) this.lastMessage = new MessageDTO(temp);
     }
 
 }

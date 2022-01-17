@@ -41,10 +41,10 @@ public class MessageController {
     public ResponseEntity<MainResponse<List<MessageDTO>>> getInRoom(@PathVariable Long id) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userService.getByUsername(username);
+        System.out.println("ALo");
         Room room = roomService.getById(id);
         if (!room.isContainsUser(currentUser))
             throw new RuntimeException("Unauthorized");
-
         MainResponse<List<MessageDTO>> response;
         List<Message> lstMessage = messageService.getInRoom(id);
 

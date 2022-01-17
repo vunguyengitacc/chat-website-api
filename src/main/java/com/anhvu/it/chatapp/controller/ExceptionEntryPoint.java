@@ -3,7 +3,6 @@ package com.anhvu.it.chatapp.controller;
 import com.anhvu.it.chatapp.data.model.User;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,7 +41,6 @@ public class ExceptionEntryPoint {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MainResponse> exceptionHandler(Exception e) {
         MainResponse<User> mainResponse;
-        e.printStackTrace();
         mainResponse = new MainResponse("" + e.getMessage(), "FAILED", true);
         return ResponseEntity.internalServerError().body(mainResponse);
     }

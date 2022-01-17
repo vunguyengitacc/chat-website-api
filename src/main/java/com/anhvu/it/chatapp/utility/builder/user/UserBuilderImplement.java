@@ -116,10 +116,12 @@ public class UserBuilderImplement implements UserBuilder {
     @Override
     public boolean validate() {
 
-        Pattern letterPattern = Pattern.compile("\\\"^(?=.*[A-Za-z])[A-Za-z\\\\d@$!%*#?&]$\\\"");
-        Pattern numberPattern = Pattern.compile("\\\"^(?=.*\\\\d)[A-Za-z\\\\d@$!%*#?&]$\\\"");
-        Pattern specialPattern = Pattern.compile("\\\"^(?=.*[@$!%*#?&])[A-Za-z\\\\d@$!%*#?&]$\\\"");
+        Pattern letterPattern = Pattern.compile(".*(?=.*?[a-zA-Z])*.");
+        Pattern numberPattern = Pattern.compile(".*(?=.*?[\\d])*.");
+        Pattern specialPattern = Pattern.compile(".*(?=.*?[#?!@$%^&*-])*.");
 
+
+        System.out.println(letterPattern.matcher(this.password).matches());
         ArrayList<String> errors = new ArrayList<>();
         if (this.password.length() < 8 || this.password.length() > 20)
             errors.add("The password length must be between 8 and 20 characters");
@@ -132,8 +134,6 @@ public class UserBuilderImplement implements UserBuilder {
         if (!specialPattern.matcher(this.password).matches()) {
             errors.add("The password value must have at least one special character");
         }
-        if (this.password.length() < 8 || this.password.length() > 20)
-            errors.add("The password length must be between 8 and 20 characters");
         if (this.username.length() < 8 || this.username.length() > 20)
             errors.add("The username length must be between 8 and 20 characters");
         if (errors.size() == 0)

@@ -129,6 +129,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
         for (User item : this.requests) {
             if (item.getUsername().equals(target.getUsername())) {
                 this.requests.remove(target);
+                return;
             }
         }
         throw new RuntimeException("Friend request is not exist");
@@ -143,6 +144,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
         for (User item : this.friends) {
             if (item.getUsername().equals(target.getUsername())) {
                 this.friends.remove(target);
+                return;
             }
         }
         throw new RuntimeException("Friend is not exist");
@@ -157,6 +159,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
         for (User item : this.waits) {
             if (item.getUsername().equals(target.getUsername())) {
                 this.waits.remove(target);
+                return;
             }
         }
         throw new RuntimeException("Friend waiting is not exist");

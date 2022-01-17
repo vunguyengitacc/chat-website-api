@@ -161,11 +161,11 @@ public class UserController {
             Room friendRoom = new Room();
             friendRoom.setType(RoomType.FRIEND);
             friendRoom.setStatus(RoomStatus.ON_ACTIVE);
-            friendRoom = roomService.saveOne(friendRoom);
-            friendRoom.setMembers(new HashSet<Member>());
-            friendRoom.addMember(new Member(friendRoom.getId(), me.getId(), RoleType.MEMBER));
-            friendRoom.addMember(new Member(friendRoom.getId(), target.getId(), RoleType.MEMBER));
-            roomService.saveOne(friendRoom);
+            Room saveData = roomService.saveOne(friendRoom);
+            saveData.setMembers(new HashSet<Member>());
+            saveData.addMember(new Member(saveData.getId(), me.getId(), RoleType.MEMBER));
+            saveData.addMember(new Member(saveData.getId(), target.getId(), RoleType.MEMBER));
+            roomService.saveOne(saveData);
         }
         MainResponse mainResponse = new MainResponse(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
