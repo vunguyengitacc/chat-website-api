@@ -9,9 +9,7 @@ import com.anhvu.it.chatapp.utility.type.RoomType;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 public class RoomDTO implements Serializable {
@@ -30,6 +28,8 @@ public class RoomDTO implements Serializable {
 
     private Set<Long> messageIds;
 
+    private MessageDTO lastMessage;
+
     public RoomDTO(Room input) {
         this.id = input.getId();
         this.name = input.getName();
@@ -41,9 +41,15 @@ public class RoomDTO implements Serializable {
             this.memberIds.add(i.getUser().getId());
         }
         this.messageIds = new HashSet<Long>();
-        for (Message i : input.getMessages()) {
-            this.messageIds.add(i.getId());
+        Iterator<Message> iterator = input.getMessages().stream()
+                .sorted((a, b) -> a.getCreatedDate().compareTo(b.getCreatedDate()))
+                .iterator();
+        Message temp = new Message();
+        while (iterator.hasNext()) {
+            temp = iterator.next();
+            this.messageIds.add(temp.getId());
         }
+        this.lastMessage = new MessageDTO(temp);
     }
 
 }

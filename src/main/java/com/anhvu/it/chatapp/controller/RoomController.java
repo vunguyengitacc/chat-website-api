@@ -77,6 +77,8 @@ public class RoomController {
         User target = userService.getById(id);
 
         Room data = roomService.getFriendRoom(currentUser, target);
+        data.setCoverImage(target.getAvatarURI());
+        data.setName(target.getName());
 
         mainResponse = new MainResponse<RoomDTO>(new RoomDTO(data), "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);

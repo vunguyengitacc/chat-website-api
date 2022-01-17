@@ -25,14 +25,28 @@ public class Message extends BaseEntity implements Serializable {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
-    @Column(length = 250, nullable = true)
+    @Column(length = 500, nullable = true)
     private String content;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
 
     @Column(name = "type")
     private MessageType type;
+
+    @PrePersist
+    public void onCreate(){
+        long currentTimeMillis = System.currentTimeMillis();
+        this.createdDate = new Date(currentTimeMillis);
+    }
+
+    @PreUpdate
+    public void onUpdate(){
+        long currentTimeMillis = System.currentTimeMillis();
+        this.updatedDate = new Date(currentTimeMillis);
+    }
 
 }

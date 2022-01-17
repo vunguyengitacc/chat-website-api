@@ -77,7 +77,7 @@ public class MessageController {
         message.setRoom(room);
         message.setType(MessageType.MESSAGE);
 
-//        messageService.saveOne(message);
+        messageService.saveOne(message);
 
         MessageDTO rs = new MessageDTO(message);
 
