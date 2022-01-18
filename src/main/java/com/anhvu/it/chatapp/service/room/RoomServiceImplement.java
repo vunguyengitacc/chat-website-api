@@ -11,8 +11,7 @@ import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -58,10 +57,11 @@ public class RoomServiceImplement implements RoomService {
 
     @Override
     public Room getFriendRoom(User user1, User user2) {
-        List<Room> rooms = roomDAL.findActiveRoomByUser(user1.getId());
-        List<Room> afterFilter = rooms.stream().filter(i -> i.getType() == RoomType.FRIEND && i.getStatus() == RoomStatus.ON_ACTIVE && i.getMembers().stream().filter(e -> e.getUser().getId() == user2.getId()).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
-        Room temp = afterFilter.get(0);
-        return temp;
+        List<Long> input = new ArrayList<>();
+        input.add(user1.getId());
+        input.add(user2.getId());
+        Room room = roomDAL.findActiveFriendRoomByUsers(input);
+        return room;
     }
 
     @Override
@@ -73,9 +73,10 @@ public class RoomServiceImplement implements RoomService {
     @Override
     public boolean restartRoom(User user1, User user2) {
         try {
-            List<Room> rooms = roomDAL.findDeletedRoomByUser(user1.getId());
-            List<Room> afterFilter = rooms.stream().filter(i -> i.getType() == RoomType.FRIEND && i.getStatus() == RoomStatus.ON_DELETE && i.getMembers().stream().filter(e -> e.getUser().getId() == user2.getId()).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
-            Room room = afterFilter.get(0);
+            List<Long> input = new ArrayList<>();
+            input.add(user1.getId());
+            input.add(user2.getId());
+            Room room = roomDAL.findDeletedFriendRoomByUsers(input);
             room.setStatus(RoomStatus.ON_ACTIVE);
             roomDAL.save(room);
             return true;

@@ -29,7 +29,7 @@ public class Room extends BaseEntity implements Serializable {
     @Column(length = 50, nullable = true)
     private String name;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "room", cascade = CascadeType.ALL)

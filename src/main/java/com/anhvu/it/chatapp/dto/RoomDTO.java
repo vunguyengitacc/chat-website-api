@@ -18,6 +18,8 @@ public class RoomDTO implements Serializable {
 
     private String name;
 
+    private String coverImage;
+
     private Date createdDate;
 
     private RoomType type;
@@ -33,6 +35,7 @@ public class RoomDTO implements Serializable {
     public RoomDTO(Room input) {
         this.id = input.getId();
         this.name = input.getName();
+        this.coverImage = input.getCoverImage();
         this.createdDate = input.getCreatedDate();
         this.type = input.getType();
         this.status = input.getStatus();

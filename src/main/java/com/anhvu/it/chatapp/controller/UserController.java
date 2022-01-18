@@ -13,6 +13,8 @@ import com.anhvu.it.chatapp.utility.type.RoomStatus;
 import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,9 @@ public class UserController {
 
     @Autowired
     PasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @GetMapping("/search")
     public ResponseEntity<MainResponse<Set<UserDTO>>> searchUsers(@RequestParam String term) {
@@ -117,7 +122,7 @@ public class UserController {
         User me = userService.getByUsername(username);
 
         List<UserDTO> res = new ArrayList<UserDTO>();
-        for(User i : me.getRequests()){
+        for (User i : me.getRequests()) {
             res.add(new UserDTO(i));
         }
 
@@ -132,7 +137,7 @@ public class UserController {
         User me = userService.getByUsername(username);
 
         List<UserDTO> res = new ArrayList<UserDTO>();
-        for(User i : me.getWaits()){
+        for (User i : me.getWaits()) {
             res.add(new UserDTO(i));
         }
 
@@ -157,7 +162,7 @@ public class UserController {
         User me = userService.getByUsername(username);
         User target = userService.getById(targetId);
         userService.acceptRequest(target, me);
-        if(!roomService.restartRoom(target, me)){
+        if (!roomService.restartRoom(target, me)) {
             Room friendRoom = new Room();
             friendRoom.setType(RoomType.FRIEND);
             friendRoom.setStatus(RoomStatus.ON_ACTIVE);
@@ -200,6 +205,7 @@ public class UserController {
         Room friendRoom = roomService.getFriendRoom(me, target);
 
         roomService.deleteOne(friendRoom);
+        simpMessagingTemplate.convertAndSend("/room/" + friendRoom.getId() + "/delete", friendRoom);
         MainResponse mainResponse = new MainResponse(true, "SUCCESS");
         return ResponseEntity.ok().body(mainResponse);
     }
