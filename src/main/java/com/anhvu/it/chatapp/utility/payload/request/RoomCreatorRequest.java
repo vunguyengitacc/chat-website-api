@@ -1,6 +1,7 @@
 package com.anhvu.it.chatapp.utility.payload.request;
 
 import com.anhvu.it.chatapp.data.model.Room;
+import com.anhvu.it.chatapp.utility.type.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class RoomCreatorRequest {
 
-    private Room room;
-    private Set<Long> members;
+    private String name;
+    private RoomType type;
+    private Set<Long> memberIds;
 
 }

@@ -9,6 +9,7 @@ import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.request.RoomCreatorRequest;
 import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
 import com.anhvu.it.chatapp.utility.type.RoleType;
+import com.anhvu.it.chatapp.utility.type.RoomStatus;
 import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -102,13 +103,16 @@ public class RoomController {
     public ResponseEntity<MainResponse<RoomDTO>> addOne(@RequestBody RoomCreatorRequest data) {
         MainResponse<RoomDTO> mainResponse;
         User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        Room temp = data.getRoom();
+        Room temp = new Room();
+        temp.setName(data.getName());
+        temp.setStatus(RoomStatus.ON_ACTIVE);
+        temp.setType(data.getType());
         temp.setMembers(new HashSet<Member>());
         Room room = roomService.saveOne(temp);
 
         Member owner = new Member(room, currentUser, RoleType.ADMIN);
         room.addMember(owner);
-        for (Long i : data.getMembers()) {
+        for (Long i : data.getMemberIds()) {
             try {
                 User u = userService.getById(i);
                 Member mem = new Member(room, u, RoleType.MEMBER);

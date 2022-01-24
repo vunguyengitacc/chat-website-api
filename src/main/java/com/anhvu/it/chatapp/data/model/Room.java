@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -44,7 +42,7 @@ public class Room extends BaseEntity implements Serializable {
     @Column(name = "status", nullable = false)
     private RoomStatus status;
 
-    @Column(name = "cover_image")
+    @Column(name = "cover_image", nullable = true)
     private String coverImage;
 
     //Constructors
@@ -52,7 +50,6 @@ public class Room extends BaseEntity implements Serializable {
     public Room(String name) {
         this.name = name;
     }
-
 
     //Other
 
