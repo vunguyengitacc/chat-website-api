@@ -1,14 +1,14 @@
 package com.anhvu.it.chatapp.controller;
 
-import com.anhvu.it.chatapp.data.model.Message;
-import com.anhvu.it.chatapp.data.model.Room;
-import com.anhvu.it.chatapp.data.model.User;
-import com.anhvu.it.chatapp.dto.MessageDTO;
+import com.anhvu.it.chatapp.respository.model.Message;
+import com.anhvu.it.chatapp.respository.model.Room;
+import com.anhvu.it.chatapp.respository.model.User;
+import com.anhvu.it.chatapp.utility.dto.MessageDTO;
 import com.anhvu.it.chatapp.service.message.MessageService;
 import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.request.MessageCreatorRequest;
-import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
+import com.anhvu.it.chatapp.utility.payload.response.MainResponse;
 import com.anhvu.it.chatapp.utility.type.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

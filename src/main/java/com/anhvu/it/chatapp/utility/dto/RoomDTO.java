@@ -1,9 +1,8 @@
-package com.anhvu.it.chatapp.dto;
+package com.anhvu.it.chatapp.utility.dto;
 
-import com.anhvu.it.chatapp.data.model.Member;
-import com.anhvu.it.chatapp.data.model.Message;
-import com.anhvu.it.chatapp.data.model.Room;
-import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.respository.model.Member;
+import com.anhvu.it.chatapp.respository.model.Message;
+import com.anhvu.it.chatapp.respository.model.Room;
 import com.anhvu.it.chatapp.utility.type.RoomStatus;
 import com.anhvu.it.chatapp.utility.type.RoomType;
 import lombok.Data;

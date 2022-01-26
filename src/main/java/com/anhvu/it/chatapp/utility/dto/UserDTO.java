@@ -1,6 +1,6 @@
-package com.anhvu.it.chatapp.dto;
+package com.anhvu.it.chatapp.utility.dto;
 
-import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.respository.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

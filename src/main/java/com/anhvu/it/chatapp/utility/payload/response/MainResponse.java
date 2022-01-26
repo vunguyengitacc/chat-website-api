@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.utility.payload.Rrsponse;
+package com.anhvu.it.chatapp.utility.payload.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

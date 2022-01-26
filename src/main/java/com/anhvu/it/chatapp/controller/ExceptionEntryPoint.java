@@ -1,7 +1,7 @@
 package com.anhvu.it.chatapp.controller;
 
-import com.anhvu.it.chatapp.data.model.User;
-import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
+import com.anhvu.it.chatapp.respository.model.User;
+import com.anhvu.it.chatapp.utility.payload.response.MainResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

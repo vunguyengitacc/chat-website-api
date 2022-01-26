@@ -1,10 +1,10 @@
 package com.anhvu.it.chatapp.controller;
 
-import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.respository.model.User;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.jwt.JWTProvider;
 import com.anhvu.it.chatapp.utility.payload.request.RegisterRequest;
-import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
+import com.anhvu.it.chatapp.utility.payload.response.MainResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

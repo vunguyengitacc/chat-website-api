@@ -1,19 +1,18 @@
 package com.anhvu.it.chatapp.controller;
 
-import com.anhvu.it.chatapp.data.model.Member;
-import com.anhvu.it.chatapp.data.model.Room;
-import com.anhvu.it.chatapp.data.model.User;
-import com.anhvu.it.chatapp.dto.UserDTO;
+import com.anhvu.it.chatapp.respository.model.Member;
+import com.anhvu.it.chatapp.respository.model.Room;
+import com.anhvu.it.chatapp.respository.model.User;
+import com.anhvu.it.chatapp.utility.dto.UserDTO;
 import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
-import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
+import com.anhvu.it.chatapp.utility.payload.response.MainResponse;
 import com.anhvu.it.chatapp.utility.payload.request.PasswordUpdateRequest;
 import com.anhvu.it.chatapp.utility.type.RoleType;
 import com.anhvu.it.chatapp.utility.type.RoomStatus;
 import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,23 +38,6 @@ public class UserController {
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
-
-    @GetMapping("/search")
-    public ResponseEntity<MainResponse<Set<UserDTO>>> searchUsers(@RequestParam String term) {
-        MainResponse<Set<UserDTO>> mainResponse;
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.getByUsername(username);
-        List<User> lstUsers = userService.search(term);
-        lstUsers.remove(user);
-        Set<UserDTO> lstRes = new HashSet<UserDTO>();
-        for (User i : lstUsers) {
-            UserDTO temp = new UserDTO();
-            temp.convert(i);
-            lstRes.add(temp);
-        }
-        mainResponse = new MainResponse<Set<UserDTO>>(lstRes, "SUCCESS");
-        return ResponseEntity.ok().body(mainResponse);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MainResponse<UserDTO>> getOneUser(@PathVariable Long id) {

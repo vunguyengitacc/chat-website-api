@@ -1,6 +1,6 @@
 package com.anhvu.it.chatapp.utility.builder.user;
 
-import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.respository.model.User;
 
 public interface UserBuilder {
 

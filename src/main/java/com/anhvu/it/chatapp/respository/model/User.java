@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.data.model;
+package com.anhvu.it.chatapp.respository.model;
 
 import com.anhvu.it.chatapp.utility.builder.user.UserBuilder;
 import com.anhvu.it.chatapp.utility.builder.user.UserBuilderImplement;

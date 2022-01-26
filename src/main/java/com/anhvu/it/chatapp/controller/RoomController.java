@@ -1,13 +1,13 @@
 package com.anhvu.it.chatapp.controller;
 
-import com.anhvu.it.chatapp.data.model.Member;
-import com.anhvu.it.chatapp.data.model.Room;
-import com.anhvu.it.chatapp.data.model.User;
-import com.anhvu.it.chatapp.dto.RoomDTO;
+import com.anhvu.it.chatapp.respository.model.Member;
+import com.anhvu.it.chatapp.respository.model.Room;
+import com.anhvu.it.chatapp.respository.model.User;
+import com.anhvu.it.chatapp.utility.dto.RoomDTO;
 import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
 import com.anhvu.it.chatapp.utility.payload.request.RoomCreatorRequest;
-import com.anhvu.it.chatapp.utility.payload.Rrsponse.MainResponse;
+import com.anhvu.it.chatapp.utility.payload.response.MainResponse;
 import com.anhvu.it.chatapp.utility.type.RoleType;
 import com.anhvu.it.chatapp.utility.type.RoomStatus;
 import com.anhvu.it.chatapp.utility.type.RoomType;
@@ -36,27 +36,6 @@ public class RoomController {
         List<Room> data = roomService.getByUser(currentUser);
         List<RoomDTO> rs = new ArrayList<RoomDTO>();
         for (Room i : data) {
-            if (i.getType() == RoomType.FRIEND) {
-                for (Member j : i.getMembers()) {
-                    if (j.getUser().getId() != currentUser.getId()) {
-                        i.setName(j.getUser().getName());
-                        i.setCoverImage(j.getUser().getAvatarURI());
-                    }
-                }
-            }
-            rs.add(new RoomDTO(i));
-        }
-        mainResponse = new MainResponse<List<RoomDTO>>(rs, "SUCCESS");
-        return ResponseEntity.ok().body(mainResponse);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<MainResponse<List<RoomDTO>>> search(@RequestParam String term) {
-        MainResponse<List<RoomDTO>> mainResponse;
-        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        List<Room> lstRoom = roomService.search(term);
-        List<RoomDTO> rs = new ArrayList<RoomDTO>();
-        for (Room i : lstRoom) {
             if (i.getType() == RoomType.FRIEND) {
                 for (Member j : i.getMembers()) {
                     if (j.getUser().getId() != currentUser.getId()) {
@@ -140,6 +119,5 @@ public class RoomController {
         }
         throw new RuntimeException("Unauthorized");
     }
-
 
 }

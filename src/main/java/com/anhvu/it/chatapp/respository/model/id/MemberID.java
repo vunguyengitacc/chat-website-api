@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.data.model.id;
+package com.anhvu.it.chatapp.respository.model.id;
 
 import lombok.Getter;
 import lombok.Setter;

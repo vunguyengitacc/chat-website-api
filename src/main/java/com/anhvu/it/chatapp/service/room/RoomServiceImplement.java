@@ -1,25 +1,19 @@
 package com.anhvu.it.chatapp.service.room;
 
-import com.anhvu.it.chatapp.data.access.MemberDAL;
-import com.anhvu.it.chatapp.data.access.RoomDAL;
-import com.anhvu.it.chatapp.data.model.Member;
-import com.anhvu.it.chatapp.data.model.Room;
-import com.anhvu.it.chatapp.data.model.User;
-import com.anhvu.it.chatapp.data.model.id.MemberID;
+import com.anhvu.it.chatapp.respository.access.RoomDAL;
+import com.anhvu.it.chatapp.respository.model.Room;
+import com.anhvu.it.chatapp.respository.model.User;
 import com.anhvu.it.chatapp.utility.type.RoomStatus;
-import com.anhvu.it.chatapp.utility.type.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class RoomServiceImplement implements RoomService {
 
     @Autowired
     RoomDAL roomDAL;
-
 
     @Override
     public List<Room> getAll() {
@@ -60,8 +54,7 @@ public class RoomServiceImplement implements RoomService {
         List<Long> input = new ArrayList<>();
         input.add(user1.getId());
         input.add(user2.getId());
-        Room room = roomDAL.findActiveFriendRoomByUsers(input);
-        return room;
+        return roomDAL.findActiveFriendRoomByUsers(input);
     }
 
     @Override

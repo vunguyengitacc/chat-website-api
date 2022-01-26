@@ -1,9 +1,10 @@
-package com.anhvu.it.chatapp.data.access;
+package com.anhvu.it.chatapp.respository.access;
 
-import com.anhvu.it.chatapp.data.model.Room;
+import com.anhvu.it.chatapp.respository.model.Room;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.anhvu.it.chatapp.service.user;
 
-import com.anhvu.it.chatapp.data.access.UserDAL;
-import com.anhvu.it.chatapp.data.model.User;
+import com.anhvu.it.chatapp.respository.access.UserDAL;
+import com.anhvu.it.chatapp.respository.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +20,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserServiceImplement implements UserService, UserDetailsService {
@@ -56,9 +57,27 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     @Override
     public User saveOne(User user, boolean isNewPassword) {
-        if(isNewPassword == true)
+        if (isNewPassword == true)
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userDAL.save(user);
+    }
+
+    @Override
+    public List<User> suggest(User user) {
+        List<User> temp = userDAL.findAll();
+        List<Long> userFriendIds = user.getFriends().stream().map(User::getId).collect(Collectors.toList());
+        temp = temp.stream()
+                .filter(i -> {
+                    List<Long> t = i.getFriends().stream().map(User::getId).collect(Collectors.toList());
+                    return !t.contains(user.getId());
+                })
+                .collect(Collectors.toList());
+        temp = temp.stream().filter(i-> {
+                    List<Long> t = i.getFriends().stream().map(User::getId).collect(Collectors.toList());
+                    return userFriendIds.stream().filter(j -> t.contains(j)).collect(Collectors.toList()).size() > 0;
+                })
+                .collect(Collectors.toList());
+        return temp;
     }
 
     @Override

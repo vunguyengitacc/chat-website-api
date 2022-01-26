@@ -1,6 +1,6 @@
-package com.anhvu.it.chatapp.data.access;
+package com.anhvu.it.chatapp.respository.access;
 
-import com.anhvu.it.chatapp.data.model.Message;
+import com.anhvu.it.chatapp.respository.model.Message;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

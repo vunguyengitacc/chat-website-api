@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.data.model;
+package com.anhvu.it.chatapp.respository.model;
 
 import com.anhvu.it.chatapp.utility.type.MessageType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;

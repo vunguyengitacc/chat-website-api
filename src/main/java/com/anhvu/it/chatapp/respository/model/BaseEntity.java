@@ -1,4 +1,4 @@
-package com.anhvu.it.chatapp.data.model;
+package com.anhvu.it.chatapp.respository.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

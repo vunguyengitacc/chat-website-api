@@ -1,10 +1,9 @@
-package com.anhvu.it.chatapp.data.model;
+package com.anhvu.it.chatapp.respository.model;
 
-import com.anhvu.it.chatapp.data.model.id.MemberID;
+import com.anhvu.it.chatapp.respository.model.id.MemberID;
 import com.anhvu.it.chatapp.utility.type.RoleType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
