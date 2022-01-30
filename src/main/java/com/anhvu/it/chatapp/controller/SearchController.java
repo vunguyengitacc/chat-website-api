@@ -98,7 +98,7 @@ public class SearchController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/rooms")
     public ResponseEntity<MainResponse<List<RoomDTO>>> searchRooms(@RequestParam String term) {
         MainResponse<List<RoomDTO>> mainResponse;
         User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
