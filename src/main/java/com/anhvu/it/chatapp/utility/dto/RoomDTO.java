@@ -17,7 +17,7 @@ public class RoomDTO implements Serializable {
 
     private String name;
 
-    private String coverImage;
+    private ArrayList<String> coverImage = new ArrayList<String>();
 
     private Date createdDate;
 
@@ -34,7 +34,13 @@ public class RoomDTO implements Serializable {
     public RoomDTO(Room input) {
         this.id = input.getId();
         this.name = input.getName();
-        this.coverImage = input.getCoverImage();
+        if(input.getType() == RoomType.FRIEND)
+            this.coverImage.add(input.getCoverImage());
+        else {
+            input.getMembers().stream().limit(4).forEach((a)->{
+                this.coverImage.add(a.getUser().getAvatarURI());
+            });
+        }
         this.createdDate = input.getCreatedDate();
         this.type = input.getType();
         this.status = input.getStatus();
