@@ -58,7 +58,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "request",
+            name = "friend_request",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_request_id")}
     )
@@ -66,11 +66,19 @@ public class User extends BaseEntity implements Serializable, UserDetails {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "waits",
+            name = "friend_waits",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_wait_id")}
     )
     private Set<User> waits;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "room_request",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "room_id")}
+    )
+    private Set<Room> askToJoins = new HashSet<Room>();
 
     @Column(length = 10)
     private String phone;

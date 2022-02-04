@@ -45,6 +45,9 @@ public class Room extends BaseEntity implements Serializable {
     @Column(name = "cover_image", nullable = true)
     private String coverImage;
 
+    @ManyToMany(mappedBy = "askToJoins")
+    private Set<User> requests = new HashSet<User>();
+
     //Constructors
 
     public Room(String name) {
