@@ -158,6 +158,24 @@ public class RoomController {
         return ResponseEntity.ok(mainResponse);
     }
 
+    @PutMapping("/{id}/request/{userId}")
+    public ResponseEntity<MainResponse<Boolean>> acceptRequest(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
+        MainResponse<Boolean> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Room room = roomService.getById(id);
+        User target = userService.getById(userId);
+        for (Member i : room.getMembers()) {
+            if (i.getRole() == RoleType.ADMIN && i.getUser().getId() == currentUser.getId()) {
+                throw new RuntimeException("Unauthorized");
+            }
+        }
+        room.removeRequest(target);
+        room.addRequest(target);
+        roomService.saveOne(room);
+        mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        return ResponseEntity.ok(mainResponse);
+    }
+
     @DeleteMapping("/{id}/request/{userId}")
     public ResponseEntity<MainResponse<Boolean>> denyRequest(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
         MainResponse<Boolean> mainResponse;
