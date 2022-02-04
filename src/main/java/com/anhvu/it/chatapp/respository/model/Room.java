@@ -61,6 +61,16 @@ public class Room extends BaseEntity implements Serializable {
         this.members.add(member);
     }
 
+    public void addRequest(User user) {
+        if (requests == null) this.requests = new HashSet<User>();
+        this.requests.add(user);
+    }
+
+    public void removeRequest(User user) {
+        if (requests == null) throw new RuntimeException("The request not exist");
+        this.requests.remove(user);
+    }
+
     public boolean isContainsUser(User user) {
         for (Member i : members) {
             if (user.getId() == i.getId().getUserId()) {

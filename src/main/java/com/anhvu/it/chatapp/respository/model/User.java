@@ -56,6 +56,9 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     )
     private Set<User> friends;
 
+    /**
+     * request from another user to become friend
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "friend_request",
@@ -64,6 +67,9 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     )
     private Set<User> requests;
 
+    /**
+     * waiting another user accept request to become friend
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "friend_waits",

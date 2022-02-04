@@ -12,6 +12,7 @@ import com.anhvu.it.chatapp.utility.payload.response.MainResponse;
 import com.anhvu.it.chatapp.utility.type.RoleType;
 import com.anhvu.it.chatapp.utility.type.RoomStatus;
 import com.anhvu.it.chatapp.utility.type.RoomType;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -121,12 +122,75 @@ public class RoomController {
         throw new RuntimeException("Unauthorized");
     }
 
-//    @GetMapping("/{id}/request")
-//    public void getRequestToJoin(@PathVariable Long id) {
-//        MainResponse<RoomDTO> mainResponse;
-//        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-//        Room room = roomService.getById(id);
-//
-//    }
+    @GetMapping("/{id}/requests")
+    public ResponseEntity<MainResponse<List<UserDTO>>> getRequestToJoin(@PathVariable Long id) {
+        MainResponse<List<UserDTO>> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Room room = roomService.getById(id);
+        boolean flag = false;
+        for (Member i : room.getMembers()) {
+            if (i.getRole() == RoleType.ADMIN && i.getUser().getId() == currentUser.getId()) {
+                flag = true;
+            }
+        }
+        if (flag == false) throw new RuntimeException("Unauthorized");
+        List<UserDTO> data = new ArrayList<UserDTO>();
+        for (User item : room.getRequests()) {
+            data.add(new UserDTO(item));
+        }
+        mainResponse = new MainResponse<List<UserDTO>>(data, "SUCCESS");
+        return ResponseEntity.ok(mainResponse);
+    }
+
+    @PostMapping("/{id}/request")
+    public ResponseEntity<MainResponse<Boolean>> askToJoin(@PathVariable Long id) {
+        MainResponse<Boolean> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Room room = roomService.getById(id);
+        for (Member i : room.getMembers()) {
+            if (i.getUser().getId() == currentUser.getId()) {
+                throw new RuntimeException("You have been already a member of this room");
+            }
+        }
+        room.addRequest(currentUser);
+        roomService.saveOne(room);
+        mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        return ResponseEntity.ok(mainResponse);
+    }
+
+    @DeleteMapping("/{id}/request/{userId}")
+    public ResponseEntity<MainResponse<Boolean>> denyRequest(@PathVariable("id") Long id, @PathVariable("userId") Long userId) {
+        MainResponse<Boolean> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Room room = roomService.getById(id);
+        User target = userService.getById(userId);
+        for (Member i : room.getMembers()) {
+            if (i.getRole() == RoleType.ADMIN && i.getUser().getId() == currentUser.getId()) {
+                throw new RuntimeException("Unauthorized");
+            }
+        }
+        room.removeRequest(target);
+        roomService.saveOne(room);
+        mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        return ResponseEntity.ok(mainResponse);
+    }
+
+    @DeleteMapping("/{id}/request/me")
+    public ResponseEntity<MainResponse<Boolean>> cancelRequest(@PathVariable Long id) {
+        MainResponse<Boolean> mainResponse;
+        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Room room = roomService.getById(id);
+        boolean flag = false;
+        for (User i : room.getRequests()) {
+            if (i.getId() == currentUser.getId()) {
+                flag = true;
+            }
+        }
+        if(flag == false) throw new RuntimeException("The request not found");
+        room.removeRequest(currentUser);
+        roomService.saveOne(room);
+        mainResponse = new MainResponse<Boolean>(true, "SUCCESS");
+        return ResponseEntity.ok(mainResponse);
+    }
 
 }

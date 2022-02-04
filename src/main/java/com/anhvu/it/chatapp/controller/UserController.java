@@ -168,7 +168,7 @@ public class UserController {
         return ResponseEntity.ok().body(mainResponse);
     }
 
-    @DeleteMapping("/me/request/{targetId}/cancel")
+    @DeleteMapping("/me/wait/{targetId}")
     public ResponseEntity<MainResponse> cancelRequest(@PathVariable Long targetId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User me = userService.getByUsername(username);
