@@ -6,6 +6,7 @@ import com.anhvu.it.chatapp.respository.model.User;
 import com.anhvu.it.chatapp.utility.dto.RoomDTO;
 import com.anhvu.it.chatapp.service.room.RoomService;
 import com.anhvu.it.chatapp.service.user.UserService;
+import com.anhvu.it.chatapp.utility.dto.UserDTO;
 import com.anhvu.it.chatapp.utility.payload.request.RoomCreatorRequest;
 import com.anhvu.it.chatapp.utility.payload.response.MainResponse;
 import com.anhvu.it.chatapp.utility.type.RoleType;
@@ -119,5 +120,13 @@ public class RoomController {
         }
         throw new RuntimeException("Unauthorized");
     }
+
+//    @GetMapping("/{id}/request")
+//    public void getRequestToJoin(@PathVariable Long id) {
+//        MainResponse<RoomDTO> mainResponse;
+//        User currentUser = userService.getByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+//        Room room = roomService.getById(id);
+//
+//    }
 
 }
